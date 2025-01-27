@@ -1,4 +1,5 @@
 # Curiopay: Open Source Budget Tracking App with LLM Insights  
+# commited!
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)  [![Status: Active](https://img.shields.io/badge/Status-Active-success.svg)](https://github.com/adhamafis/curiopay)  [![TypeScript](https://img.shields.io/badge/TypeScript-5.2.2-blue.svg)](https://www.typescriptlang.org/)  [![Next.js](https://img.shields.io/badge/Next.js-14.0.4-black.svg)](https://nextjs.org/)  [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4.0-38B2AC.svg)](https://tailwindcss.com/)  
 
