@@ -100,7 +100,6 @@ interface LLMProvider {
     customModel?: boolean;
     contextLength?: boolean;
     temperature?: boolean;
-    systemPrompt?: boolean;
     maxTokens?: boolean;
   };
 }
@@ -182,23 +181,18 @@ export default function SettingsPage() {
       id: 'openai',
       name: 'OpenAI',
       svgPath: '/openai.svg',
-      description: 'GPT-3.5, GPT-4, and more',
+      description: 'GPT-4 Turbo and GPT-3.5 Turbo',
       requiresApiKey: true,
       apiKeyPlaceholder: 'sk-...',
       apiKeyLink: 'https://platform.openai.com/api-keys',
       extraSettings: {
         modelOptions: [
           'gpt-4-turbo-preview',
-          'gpt-4-0125-preview',
-          'gpt-4-1106-preview',
           'gpt-4',
-          'gpt-4-32k',
-          'gpt-3.5-turbo',
-          'gpt-3.5-turbo-16k'
+          'gpt-3.5-turbo'
         ],
         customModel: true,
         temperature: true,
-        systemPrompt: true,
         maxTokens: true,
       },
     },
@@ -206,21 +200,17 @@ export default function SettingsPage() {
       id: 'anthropic',
       name: 'Anthropic',
       svgPath: '/anthropic.svg',
-      description: 'Claude and Claude Instant',
+      description: 'Claude 3 models',
       requiresApiKey: true,
       apiKeyPlaceholder: 'sk-ant-...',
-      apiKeyLink: 'https://console.anthropic.com/account/keys',
+      apiKeyLink: 'https://console.anthropic.com/settings/keys',
       extraSettings: {
         modelOptions: [
           'claude-3-opus-20240229',
           'claude-3-sonnet-20240229',
-          'claude-2.1',
-          'claude-2.0',
-          'claude-instant-1.2'
+          'claude-3-haiku-20240307'
         ],
-        customModel: true,
         temperature: true,
-        systemPrompt: true,
         maxTokens: true,
       },
     },
@@ -232,42 +222,36 @@ export default function SettingsPage() {
       requiresApiKey: false,
       extraSettings: {
         baseUrl: true,
-        customModel: true,
         modelOptions: [
           'llama2',
-          'llama2:13b',
-          'llama2:70b',
-          'codellama',
           'mistral',
-          'mixtral',
+          'codellama',
+          'dolphin-phi',
           'neural-chat',
           'starling-lm',
-          'phi',
-          'qwen',
-          'yi'
+          'orca-mini',
+          'vicuna'
         ],
+        customModel: true,
         contextLength: true,
         temperature: true,
-        systemPrompt: true,
         maxTokens: true,
       },
     },
     {
       id: 'gemini',
-      name: 'Google AI',
-      svgPath: '/google.svg',
-      description: 'PaLM and Gemini',
+      name: 'Google Gemini',
+      svgPath: '/gemini.svg',
+      description: 'Gemini Pro and Ultra',
       requiresApiKey: true,
-      apiKeyPlaceholder: 'AIza...',
-      apiKeyLink: 'https://makersuite.google.com/app/apikeys',
+      apiKeyPlaceholder: 'g-...',
+      apiKeyLink: 'https://ai.google.dev/',
       extraSettings: {
         modelOptions: [
           'gemini-pro',
-          'gemini-pro-vision',
+          'gemini-pro-vision'
         ],
-        customModel: true,
         temperature: true,
-        systemPrompt: true,
         maxTokens: true,
       },
     },
@@ -275,41 +259,36 @@ export default function SettingsPage() {
       id: 'cohere',
       name: 'Cohere',
       svgPath: '/cohere.svg',
-      description: 'Command and Generate',
+      description: 'Command and other models',
       requiresApiKey: true,
-      apiKeyPlaceholder: 'co-...',
+      apiKeyPlaceholder: '...',
       apiKeyLink: 'https://dashboard.cohere.com/api-keys',
       extraSettings: {
         modelOptions: [
           'command',
           'command-light',
           'command-nightly',
-          'command-r',
-          'command-light-r'
+          'command-light-nightly'
         ],
-        customModel: true,
         temperature: true,
         maxTokens: true,
       },
     },
     {
       id: 'mistral',
-      name: 'Mistral AI',
+      name: 'Mistral',
       svgPath: '/mistral.svg',
-      description: 'Mistral-7B and more',
+      description: 'Mistral Large and Medium',
       requiresApiKey: true,
-      apiKeyPlaceholder: 'mis-...',
+      apiKeyPlaceholder: '...',
       apiKeyLink: 'https://console.mistral.ai/api-keys/',
       extraSettings: {
         modelOptions: [
           'mistral-large-latest',
           'mistral-medium-latest',
-          'mistral-small-latest',
-          'mistral-tiny-latest'
+          'mistral-small-latest'
         ],
-        customModel: true,
         temperature: true,
-        systemPrompt: true,
         maxTokens: true,
       },
     },
@@ -317,21 +296,17 @@ export default function SettingsPage() {
       id: 'azure',
       name: 'Azure OpenAI',
       svgPath: '/azure.svg',
-      description: 'Azure-hosted models',
+      description: 'Azure-hosted OpenAI models',
       requiresApiKey: true,
-      apiKeyPlaceholder: 'azure-key',
+      apiKeyPlaceholder: '...',
       apiKeyLink: 'https://portal.azure.com/',
       extraSettings: {
         baseUrl: true,
         modelOptions: [
           'gpt-4',
-          'gpt-4-32k',
-          'gpt-35-turbo',
-          'gpt-35-turbo-16k'
+          'gpt-35-turbo'
         ],
-        customModel: true,
         temperature: true,
-        systemPrompt: true,
         maxTokens: true,
       },
     },
@@ -351,7 +326,6 @@ export default function SettingsPage() {
         ],
         customModel: true,
         temperature: true,
-        systemPrompt: true,
         maxTokens: true,
       },
     },
@@ -372,7 +346,6 @@ export default function SettingsPage() {
         ],
         customModel: true,
         temperature: true,
-        systemPrompt: true,
         maxTokens: true,
         baseUrl: true,
       },
@@ -384,13 +357,11 @@ export default function SettingsPage() {
       model: 'gpt-4-turbo-preview',
       temperature: 0.7,
       maxTokens: 4000,
-      systemPrompt: '',
     },
     anthropic: {
       model: 'claude-3-opus-20240229',
       temperature: 0.7,
       maxTokens: 4000,
-      systemPrompt: '',
     },
     ollama: {
       baseUrl: 'http://localhost:11434',
@@ -399,13 +370,11 @@ export default function SettingsPage() {
       contextLength: 4096,
       temperature: 0.7,
       maxTokens: 4000,
-      systemPrompt: '',
     },
     gemini: {
       model: 'gemini-pro',
       temperature: 0.7,
       maxTokens: 4000,
-      systemPrompt: '',
     },
     cohere: {
       model: 'command',
@@ -416,21 +385,23 @@ export default function SettingsPage() {
       model: 'mistral-large-latest',
       temperature: 0.7,
       maxTokens: 4000,
-      systemPrompt: '',
     },
     azure: {
       model: 'gpt-4',
       baseUrl: '',
       temperature: 0.7,
       maxTokens: 4000,
-      systemPrompt: '',
     },
     groq: {
       model: 'mixtral-8x7b-32768',
       temperature: 0.7,
       maxTokens: 4000,
-      systemPrompt: '',
     },
+    deepseek: {
+      model: 'deepseek-chat',
+      temperature: 0.7,
+      maxTokens: 4000,
+    }
   };
 
   const handleResetProviderConfig = (providerId: string) => {
@@ -1324,21 +1295,6 @@ export default function SettingsPage() {
                       </div>
                       <p className="text-sm text-muted-foreground">
                         Controls randomness in responses (0.0-2.0)
-                      </p>
-                    </div>
-                  )}
-
-                  {llmProviders.find(p => p.id === selectedLLM)?.extraSettings?.systemPrompt && (
-                    <div className="space-y-2">
-                      <Label className="text-base font-medium">System Prompt</Label>
-                      <textarea
-                        value={providerConfigs[selectedLLM]?.systemPrompt || ''}
-                        onChange={(e) => handleProviderConfigChange(selectedLLM, { systemPrompt: e.target.value })}
-                        placeholder="Enter a system prompt to guide the model's behavior..."
-                        className="w-full h-32 px-3 py-2 text-sm rounded-md border border-input bg-background font-mono resize-none"
-                      />
-                      <p className="text-sm text-muted-foreground">
-                        Custom instructions to control the model's behavior and personality
                       </p>
                     </div>
                   )}
