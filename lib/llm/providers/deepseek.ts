@@ -4,36 +4,35 @@ import { generateLLMPrompt } from '../utils';
 import { llmLogger } from '../logging';
 import type { ProviderConfig } from '../factory';
 
-interface OpenAIConfig extends ProviderConfig {
+interface DeepSeekConfig extends ProviderConfig {
   model?: string;
   temperature?: number;
   maxTokens?: number;
   systemPrompt?: string;
-  organization?: string;
   baseURL?: string;
 }
 
-export class OpenAIProvider implements LLMProvider {
+export class DeepSeekProvider implements LLMProvider {
   private client: OpenAI;
-  private config: OpenAIConfig;
+  private config: DeepSeekConfig;
 
-  constructor(config: OpenAIConfig) {
+  constructor(config: DeepSeekConfig) {
     if (!config.apiKey) {
-      throw new Error('OpenAI API key is required');
+      throw new Error('DeepSeek API key is required');
     }
 
     this.config = {
-      model: config.model || 'gpt-4-turbo-preview',
+      model: config.model || 'deepseek-chat',
       temperature: config.temperature || 0.7,
       maxTokens: config.maxTokens || 4000,
       systemPrompt: config.systemPrompt || '',
+      baseURL: config.baseURL || 'https://api.deepseek.com/v1',
       ...config
     };
 
     this.client = new OpenAI({
       apiKey: config.apiKey,
-      organization: config.organization,
-      baseURL: config.baseURL,
+      baseURL: this.config.baseURL,
       maxRetries: 3,
       timeout: 60000
     });
@@ -61,14 +60,14 @@ export class OpenAIProvider implements LLMProvider {
         temperature: this.config.temperature,
         max_tokens: this.config.maxTokens,
         response_format: { type: "json_object" },
-        seed: 42, // For more consistent responses
+        seed: 42,
         presence_penalty: 0.1,
         frequency_penalty: 0.1
       });
 
       const content = response.choices[0].message?.content?.trim();
       if (!content) {
-        throw new Error('Empty response from OpenAI');
+        throw new Error('Empty response from DeepSeek');
       }
 
       let parsedResponse: InsightData;
@@ -77,7 +76,7 @@ export class OpenAIProvider implements LLMProvider {
       } catch (parseError) {
         llmLogger.log({
           timestamp: new Date().toISOString(),
-          provider: 'openai',
+          provider: 'deepseek',
           prompt,
           error: parseError,
           response: content,
@@ -85,7 +84,7 @@ export class OpenAIProvider implements LLMProvider {
           success: false,
           level: 'error'
         });
-        throw new Error('Failed to parse OpenAI response as JSON');
+        throw new Error('Failed to parse DeepSeek response as JSON');
       }
 
       // Validate response structure
@@ -98,20 +97,19 @@ export class OpenAIProvider implements LLMProvider {
 
       llmLogger.log({
         timestamp: new Date().toISOString(),
-        provider: 'openai',
+        provider: 'deepseek',
         prompt,
         response: parsedResponse,
         duration: Date.now() - startTime,
         success: true,
-        level: 'info',
-        usage: response.usage
+        level: 'info'
       });
 
       return parsedResponse;
     } catch (error) {
       llmLogger.log({
         timestamp: new Date().toISOString(),
-        provider: 'openai',
+        provider: 'deepseek',
         prompt,
         error,
         duration: Date.now() - startTime,
@@ -119,9 +117,8 @@ export class OpenAIProvider implements LLMProvider {
         level: 'error'
       });
 
-      // Enhance error handling
       if (error instanceof OpenAI.APIError) {
-        throw new Error(`OpenAI API Error: ${error.message} (Type: ${error.type}, Code: ${error.code})`);
+        throw new Error(`DeepSeek API Error: ${error.message} (Type: ${error.type}, Code: ${error.code})`);
       }
       throw error;
     }
@@ -154,7 +151,7 @@ export class OpenAIProvider implements LLMProvider {
 
       const content = response.choices[0].message?.content?.trim();
       if (!content) {
-        throw new Error('Empty response from OpenAI');
+        throw new Error('Empty response from DeepSeek');
       }
 
       const chatResponse: ChatResponse = {
@@ -168,20 +165,19 @@ export class OpenAIProvider implements LLMProvider {
 
       llmLogger.log({
         timestamp: new Date().toISOString(),
-        provider: 'openai',
+        provider: 'deepseek',
         prompt: messages[messages.length - 1].content,
         response: chatResponse,
         duration: Date.now() - startTime,
         success: true,
-        level: 'info',
-        usage: response.usage
+        level: 'info'
       });
 
       return chatResponse;
     } catch (error) {
       llmLogger.log({
         timestamp: new Date().toISOString(),
-        provider: 'openai',
+        provider: 'deepseek',
         prompt: messages[messages.length - 1].content,
         error,
         duration: Date.now() - startTime,
@@ -190,10 +186,9 @@ export class OpenAIProvider implements LLMProvider {
       });
 
       if (error instanceof OpenAI.APIError) {
-        throw new Error(`OpenAI API Error: ${error.message} (Type: ${error.type}, Code: ${error.code})`);
+        throw new Error(`DeepSeek API Error: ${error.message} (Type: ${error.type}, Code: ${error.code})`);
       }
       throw error;
     }
   }
-}
-//todo: implement the OpenAIProvider class
+} 

@@ -355,6 +355,28 @@ export default function SettingsPage() {
         maxTokens: true,
       },
     },
+    {
+      id: 'deepseek',
+      name: 'DeepSeek',
+      svgPath: '/deepseek.svg',
+      description: 'DeepSeek Chat and Code models',
+      requiresApiKey: true,
+      apiKeyPlaceholder: 'sk-...',
+      apiKeyLink: 'https://platform.deepseek.ai/api-keys',
+      extraSettings: {
+        modelOptions: [
+          'deepseek-chat',
+          'deepseek-coder',
+          'deepseek-math',
+          'deepseek-chinese',
+        ],
+        customModel: true,
+        temperature: true,
+        systemPrompt: true,
+        maxTokens: true,
+        baseUrl: true,
+      },
+    },
   ];
 
   const defaultProviderConfigs: { [key: string]: any } = {
