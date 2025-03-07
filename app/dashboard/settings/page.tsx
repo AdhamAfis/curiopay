@@ -70,6 +70,18 @@ import { Label } from "@/components/ui/label";
 import Image from 'next/image';
 import { themes } from "@/lib/themes";
 import { useSession } from "next-auth/react";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface UserSettings {
   preferences: {
@@ -1057,7 +1069,7 @@ export default function SettingsPage() {
       </Dialog>
 
       <Dialog open={showProviderConfig} onOpenChange={setShowProviderConfig}>
-        <DialogContent className="sm:max-w-[600px] w-[95vw] h-[90vh] sm:h-auto max-h-[90vh] p-6 overflow-hidden flex flex-col gap-6 bg-background">
+        <DialogContent className="sm:max-w-[800px] w-[95vw] h-[90vh] sm:h-auto max-h-[90vh] p-6 overflow-hidden flex flex-col gap-6 bg-background">
           <DialogHeader className="flex-shrink-0 space-y-2">
             <DialogTitle className="text-2xl font-bold flex items-center gap-3">
               <div className="w-8 h-8 relative">
@@ -1076,119 +1088,16 @@ export default function SettingsPage() {
           </DialogHeader>
 
           <div className="flex-1 overflow-y-auto">
-            <div className="pr-2 space-y-6">
-              {selectedLLM === 'ollama' ? (
-                <div className="space-y-6">
-                  <div className="space-y-2">
-                    <Label className="text-base font-medium">Base URL</Label>
-                    <Input
-                      value={ollamaConfig.baseUrl}
-                      onChange={(e) => handleOllamaConfigChange({ baseUrl: e.target.value })}
-                      placeholder="http://localhost:11434"
-                      className="font-mono"
-                    />
-                    <p className="text-sm text-muted-foreground">
-                      The URL where your Ollama instance is running
-                    </p>
-                  </div>
-                  <div className="space-y-2">
-                    <Label className="text-base font-medium">Model</Label>
-                    <Select
-                      value={ollamaConfig.model}
-                      onValueChange={(value) => handleOllamaConfigChange({ model: value })}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select model" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-white">
-                        <SelectItem value="llama2">Llama 2</SelectItem>
-                        <SelectItem value="codellama">Code Llama</SelectItem>
-                        <SelectItem value="mistral">Mistral</SelectItem>
-                        <SelectItem value="custom">Custom Model</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    {ollamaConfig.model === 'custom' && (
-                      <div className="mt-2 space-y-2">
-                        <Label>Custom Model Name</Label>
-                        <Input
-                          placeholder="Enter custom model name"
-                          value={ollamaConfig.customModel}
-                          onChange={(e) => handleOllamaConfigChange({ customModel: e.target.value })}
-                          className="font-mono"
-                        />
-                      </div>
-                    )}
-                  </div>
-                  <div className="space-y-2">
-                    <Label className="text-base font-medium">Context Length</Label>
-                    <Input
-                      type="number"
-                      value={ollamaConfig.contextLength}
-                      onChange={(e) => handleOllamaConfigChange({ contextLength: parseInt(e.target.value) })}
-                      min={1}
-                      max={32768}
-                      className="font-mono"
-                    />
-                    <p className="text-sm text-muted-foreground">
-                      Maximum number of tokens to consider for context (1-32768)
-                    </p>
-                  </div>
-                  <div className="space-y-2">
-                    <Label className="text-base font-medium">Temperature</Label>
-                    <Input
-                      type="number"
-                      value={ollamaConfig.temperature}
-                      onChange={(e) => handleOllamaConfigChange({ temperature: parseFloat(e.target.value) })}
-                      min={0}
-                      max={2}
-                      step={0.1}
-                      className="font-mono"
-                    />
-                    <p className="text-sm text-muted-foreground">
-                      Controls randomness in responses (0.0-2.0)
-                    </p>
-                  </div>
-                </div>
-              ) : (
-                <div className="space-y-6">
-                  {llmProviders.find(p => p.id === selectedLLM)?.extraSettings?.modelOptions && (
-                    <div className="space-y-2">
-                      <Label className="text-base font-medium">Model</Label>
-                      <Select
-                        value={providerConfigs[selectedLLM]?.model || llmProviders.find(p => p.id === selectedLLM)?.extraSettings?.modelOptions?.[0]}
-                        onValueChange={(value) => handleProviderConfigChange(selectedLLM, { model: value })}
-                      >
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Select model" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {llmProviders.find(p => p.id === selectedLLM)?.extraSettings?.modelOptions?.map(model => (
-                            <SelectItem key={model} value={model}>
-                              {model}
-                            </SelectItem>
-                          ))}
-                          {llmProviders.find(p => p.id === selectedLLM)?.extraSettings?.customModel && (
-                            <SelectItem value="custom">Custom Model</SelectItem>
-                          )}
-                        </SelectContent>
-                      </Select>
-                      {providerConfigs[selectedLLM]?.model === 'custom' && (
-                        <div className="mt-2 space-y-2">
-                          <Label className="font-medium">Custom Model Name</Label>
-                          <Input
-                            placeholder="Enter custom model name"
-                            value={providerConfigs[selectedLLM]?.customModelName || ''}
-                            onChange={(e) => handleProviderConfigChange(selectedLLM, { customModelName: e.target.value })}
-                            className="font-mono"
-                          />
-                          <p className="text-sm text-muted-foreground">
-                            Enter the exact model name/ID as specified by the provider
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  )}
+            <Tabs defaultValue="general" className="w-full">
+              <TabsList className="grid w-full grid-cols-3 mb-6">
+                <TabsTrigger value="general">General</TabsTrigger>
+                <TabsTrigger value="model">Model</TabsTrigger>
+                <TabsTrigger value="advanced">Advanced</TabsTrigger>
+              </TabsList>
 
+              <TabsContent value="general" className="space-y-6">
+                <div className="space-y-4">
+                  {/* API Key Section */}
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
                       <Label className="text-base font-medium">API Key</Label>
@@ -1230,49 +1139,83 @@ export default function SettingsPage() {
                     </div>
                   </div>
 
-                  {llmProviders.find(p => p.id === selectedLLM)?.extraSettings?.maxTokens && (
-                    <div className="space-y-2">
-                      <Label className="text-base font-medium">Max Tokens</Label>
-                      <div className="flex gap-4 items-center">
-                        <Input
-                          type="range"
-                          min={1}
-                          max={32000}
-                          step={1}
-                          value={providerConfigs[selectedLLM]?.maxTokens || 4000}
-                          onChange={(e) => handleProviderConfigChange(selectedLLM, { maxTokens: parseInt(e.target.value) })}
-                          className="flex-1"
-                        />
-                        <Input
-                          type="number"
-                          min={1}
-                          max={32000}
-                          value={providerConfigs[selectedLLM]?.maxTokens || 4000}
-                          onChange={(e) => handleProviderConfigChange(selectedLLM, { maxTokens: parseInt(e.target.value) })}
-                          className="w-24 font-mono"
-                        />
-                      </div>
-                      <p className="text-sm text-muted-foreground">
-                        Maximum number of tokens to generate in the response
-                      </p>
-                    </div>
-                  )}
-
+                  {/* Base URL Section */}
                   {llmProviders.find(p => p.id === selectedLLM)?.extraSettings?.baseUrl && (
                     <div className="space-y-2">
                       <Label className="text-base font-medium">Base URL</Label>
                       <Input
                         value={providerConfigs[selectedLLM]?.baseUrl || ''}
                         onChange={(e) => handleProviderConfigChange(selectedLLM, { baseUrl: e.target.value })}
-                        placeholder="https://your-azure-endpoint.openai.azure.com"
+                        placeholder="https://your-endpoint.com"
                         className="font-mono"
                       />
+                      <p className="text-sm text-muted-foreground">
+                        The API endpoint URL for your service
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </TabsContent>
+
+              <TabsContent value="model" className="space-y-6">
+                <div className="space-y-4">
+                  {/* Model Selection */}
+                  {llmProviders.find(p => p.id === selectedLLM)?.extraSettings?.modelOptions && (
+                    <div className="space-y-2">
+                      <Label className="text-base font-medium">Model</Label>
+                      <Select
+                        value={providerConfigs[selectedLLM]?.model || llmProviders.find(p => p.id === selectedLLM)?.extraSettings?.modelOptions?.[0]}
+                        onValueChange={(value) => handleProviderConfigChange(selectedLLM, { model: value })}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Select model" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {llmProviders.find(p => p.id === selectedLLM)?.extraSettings?.modelOptions?.map(model => (
+                            <SelectItem key={model} value={model}>
+                              {model}
+                            </SelectItem>
+                          ))}
+                          {llmProviders.find(p => p.id === selectedLLM)?.extraSettings?.customModel && (
+                            <SelectItem value="custom">Custom Model</SelectItem>
+                          )}
+                        </SelectContent>
+                      </Select>
                     </div>
                   )}
 
+                  {/* Custom Model Name */}
+                  {providerConfigs[selectedLLM]?.model === 'custom' && (
+                    <div className="space-y-2">
+                      <Label className="text-base font-medium">Custom Model Name</Label>
+                      <Input
+                        placeholder="Enter custom model name"
+                        value={providerConfigs[selectedLLM]?.customModelName || ''}
+                        onChange={(e) => handleProviderConfigChange(selectedLLM, { customModelName: e.target.value })}
+                        className="font-mono"
+                      />
+                      <p className="text-sm text-muted-foreground">
+                        Enter the exact model name/ID as specified by the provider
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Temperature Control */}
                   {llmProviders.find(p => p.id === selectedLLM)?.extraSettings?.temperature && (
                     <div className="space-y-2">
-                      <Label className="text-base font-medium">Temperature</Label>
+                      <div className="flex items-center gap-2">
+                        <Label className="text-base font-medium">Temperature</Label>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <InfoIcon className="h-4 w-4 text-muted-foreground" />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>Controls randomness in responses. Higher values make the output more creative but less predictable.</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </div>
                       <div className="flex gap-4 items-center">
                         <Input
                           type="range"
@@ -1293,24 +1236,90 @@ export default function SettingsPage() {
                           className="w-20 font-mono"
                         />
                       </div>
-                      <p className="text-sm text-muted-foreground">
-                        Controls randomness in responses (0.0-2.0)
-                      </p>
+                    </div>
+                  )}
+                </div>
+              </TabsContent>
+
+              <TabsContent value="advanced" className="space-y-6">
+                <div className="space-y-4">
+                  {/* Max Tokens Control */}
+                  {llmProviders.find(p => p.id === selectedLLM)?.extraSettings?.maxTokens && (
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2">
+                        <Label className="text-base font-medium">Max Tokens</Label>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <InfoIcon className="h-4 w-4 text-muted-foreground" />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>Maximum number of tokens to generate in the response. Higher values allow for longer responses but cost more.</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </div>
+                      <div className="flex gap-4 items-center">
+                        <Input
+                          type="range"
+                          min={1}
+                          max={32000}
+                          step={1}
+                          value={providerConfigs[selectedLLM]?.maxTokens || 4000}
+                          onChange={(e) => handleProviderConfigChange(selectedLLM, { maxTokens: parseInt(e.target.value) })}
+                          className="flex-1"
+                        />
+                        <Input
+                          type="number"
+                          min={1}
+                          max={32000}
+                          value={providerConfigs[selectedLLM]?.maxTokens || 4000}
+                          onChange={(e) => handleProviderConfigChange(selectedLLM, { maxTokens: parseInt(e.target.value) })}
+                          className="w-24 font-mono"
+                        />
+                      </div>
                     </div>
                   )}
 
-                  {selectedLLM === 'azure' && (
-                    <Alert>
-                      <InfoIcon className="h-4 w-4" />
-                      <AlertTitle>Azure Configuration</AlertTitle>
-                      <AlertDescription>
-                        Make sure to provide both the API key and the Azure endpoint URL. The model field should match your Azure deployment name.
-                      </AlertDescription>
-                    </Alert>
+                  {/* Context Length for Ollama */}
+                  {selectedLLM === 'ollama' && (
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2">
+                        <Label className="text-base font-medium">Context Length</Label>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <InfoIcon className="h-4 w-4 text-muted-foreground" />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>Maximum number of tokens to consider for context. Higher values allow the model to reference more previous conversation but use more memory.</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </div>
+                      <Input
+                        type="number"
+                        value={ollamaConfig.contextLength}
+                        onChange={(e) => handleOllamaConfigChange({ contextLength: parseInt(e.target.value) })}
+                        min={1}
+                        max={32768}
+                        className="font-mono"
+                      />
+                    </div>
                   )}
                 </div>
-              )}
-            </div>
+
+                {selectedLLM === 'azure' && (
+                  <Alert>
+                    <InfoIcon className="h-4 w-4" />
+                    <AlertTitle>Azure Configuration</AlertTitle>
+                    <AlertDescription>
+                      Make sure to provide both the API key and the Azure endpoint URL. The model field should match your Azure deployment name.
+                    </AlertDescription>
+                  </Alert>
+                )}
+              </TabsContent>
+            </Tabs>
           </div>
 
           <div className="flex flex-col sm:flex-row justify-end gap-3 pt-4 border-t flex-shrink-0">
