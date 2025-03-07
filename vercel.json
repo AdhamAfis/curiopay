@@ -13,5 +13,11 @@
   ],
   "framework": "nextjs",
   "installCommand": "npm install",
-  "buildCommand": "prisma generate && prisma migrate deploy && next build"
+  "buildCommand": "prisma generate && prisma migrate deploy && next build",
+  "crons": [
+    {
+      "path": "/api/cron/recurring",
+      "schedule": "0 0 * * *"
+    }
+  ]
 }
