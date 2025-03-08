@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
 import { cn } from "@/lib/utils";
@@ -24,6 +25,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Sparkles, ArrowRight, Shield, Brain, LineChart } from "lucide-react";
+import Head from "next/head";
 
 const benefits = [
   {
@@ -77,10 +79,45 @@ export default function Home() {
 
   useEffect(() => {
     setIsMounted(true);
+    
+    // Add structured data for SEO
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.innerHTML = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "CurioPay",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "Privacy-focused budget tracking with AI-powered insights. Forever free, completely open source."
+    });
+    document.head.appendChild(script);
+    
+    return () => {
+      document.head.removeChild(script);
+    };
   }, []);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      {/* SEO Meta Tags */}
+      <Head>
+        <title>CurioPay - Open Source Budget Tracking with AI Insights</title>
+        <meta name="description" content="Privacy-focused budget tracking with AI-powered insights. Forever free, completely open source." />
+        <meta name="keywords" content="budget tracking, financial management, open source, AI, privacy" />
+        <meta property="og:title" content="CurioPay - Open Source Budget Tracking" />
+        <meta property="og:description" content="Privacy-focused budget tracking with AI-powered insights. Forever free, completely open source." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://curiopay.com" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="CurioPay - Open Source Budget Tracking" />
+        <meta name="twitter:description" content="Privacy-focused budget tracking with AI-powered insights. Forever free, completely open source." />
+      </Head>
       {/* Navbar */}
       <nav className="fixed w-full z-50 bg-background/80 backdrop-blur-md border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
@@ -106,11 +143,11 @@ export default function Home() {
               href="https://github.com/adhamafis/curiopay"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-md bg-secondary hover:bg-secondary/80 transition-colors"
+              className="flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 rounded-md bg-secondary hover:bg-secondary/80 transition-colors"
               whileHover={{ scale: 1.05 }}
             >
-              <GitHubLogoIcon className="w-5 h-5" />
-              <span className="text-secondary-foreground">Star on GitHub</span>
+              <GitHubLogoIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+              <span className="text-secondary-foreground text-xs sm:text-sm">Star</span>
             </motion.a>
             <Link href="/login">
               <motion.div whileHover={{ scale: 1.05 }}>
@@ -138,116 +175,133 @@ export default function Home() {
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="w-full h-full bg-white/30 backdrop-blur-3xl [mask-image:radial-gradient(transparent,white_50%)]" />
         </div>
-        <div className="max-w-7xl mx-auto text-center relative">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="relative inline-block mb-4 sm:mb-6"
-          >
-            <motion.div
-              animate={{ 
-                scale: [1, 1.02, 1],
-                rotate: [0, 1, -1, 0]
-              }}
-              transition={{ 
-                duration: 5,
-                repeat: Infinity,
-                repeatType: "reverse"
-              }}
-              className="absolute -inset-2 rounded-xl bg-blue-500/10 blur-xl"
-            />
-            <div className="relative">
-              <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-foreground">
-                100% Free & <br />
-                <span className="text-primary">Open Source</span>
-              </h1>
+        <div className="max-w-7xl mx-auto relative">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            <div className="text-center lg:text-left">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="relative inline-block mb-4 sm:mb-6"
+              >
+                <motion.div
+                  animate={{ 
+                    scale: [1, 1.02, 1],
+                    rotate: [0, 1, -1, 0]
+                  }}
+                  transition={{ 
+                    duration: 5,
+                    repeat: Infinity,
+                    repeatType: "reverse"
+                  }}
+                  className="absolute -inset-2 rounded-xl bg-blue-500/10 blur-xl"
+                />
+                <div className="relative">
+                  <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-foreground">
+                    100% Free & <br />
+                    <span className="text-primary">Open Source</span>
+                  </h1>
+                </div>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15 }}
+                className="flex items-center justify-center lg:justify-start gap-2 mb-4"
+              >
+                <span className="text-lg sm:text-xl text-muted-foreground">Where</span>
+                <span className="font-semibold text-lg sm:text-xl bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">Curiosity</span>
+                <span className="text-lg sm:text-xl text-muted-foreground">meets</span>
+                <span className="font-semibold text-lg sm:text-xl bg-gradient-to-r from-green-600 to-green-400 bg-clip-text text-transparent">Payments</span>
+              </motion.div>
+              <motion.p 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.5 }}
+                className="text-lg sm:text-xl md:text-2xl text-muted-foreground mb-8 sm:mb-12 max-w-2xl mx-auto lg:mx-0 px-4 sm:px-0"
+              >
+                Privacy-focused budget tracking with AI-powered insights. Forever free, completely open source.
+              </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="bg-yellow-100 dark:bg-yellow-900/50 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 mb-8 max-w-2xl mx-auto lg:mx-0"
+              >
+                <p className="text-yellow-800 dark:text-yellow-200 text-sm sm:text-base">
+                  ⚠️ <strong>Important:</strong> While we offer a demo for preview purposes, we strongly recommend local deployment for actual use. The demo should NOT be used for real financial data. Your financial privacy matters - deploy locally to keep your data under your control.
+                </p>
+              </motion.div>
+
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start"
+              >
+                <Link href="/register" className="w-full sm:w-auto">
+                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <Button size="lg" className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground text-lg px-8 py-6 shadow-lg">
+                      Get Started <ArrowRight className="w-5 h-5 inline-block ml-2" />
+                    </Button>
+                  </motion.div>
+                </Link>
+                <a 
+                  href="https://github.com/adhamafis/curiopay"
+                  target="_blank"
+                  rel="noopener noreferrer" 
+                  className="w-full sm:w-auto"
+                >
+                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <Button size="lg" variant="outline" className="w-full sm:w-auto text-lg px-8 py-6 border-2 hover:bg-secondary/50">
+                      <GitHubLogoIcon className="w-5 h-5 inline-block mr-2" />
+                      View on GitHub
+                    </Button>
+                  </motion.div>
+                </a>
+              </motion.div>
             </div>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.15 }}
-            className="flex items-center justify-center gap-2 mb-4"
-          >
-            <span className="text-lg sm:text-xl text-muted-foreground">Where</span>
-            <span className="font-semibold text-lg sm:text-xl bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">Curiosity</span>
-            <span className="text-lg sm:text-xl text-muted-foreground">meets</span>
-            <span className="font-semibold text-lg sm:text-xl bg-gradient-to-r from-green-600 to-green-400 bg-clip-text text-transparent">Payments</span>
-          </motion.div>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-            className="text-lg sm:text-xl md:text-2xl text-muted-foreground mb-8 sm:mb-12 max-w-2xl mx-auto px-4 sm:px-0"
-          >
-            Privacy-focused budget tracking with AI-powered insights. Forever free, completely open source.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="bg-yellow-100 dark:bg-yellow-900/50 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 mb-8 max-w-2xl mx-auto"
-          >
-            <p className="text-yellow-800 dark:text-yellow-200 text-sm sm:text-base">
-              ⚠️ <strong>Important:</strong> While we offer a demo for preview purposes, we strongly recommend local deployment for actual use. The demo should NOT be used for real financial data. Your financial privacy matters - deploy locally to keep your data under your control.
-            </p>
-          </motion.div>
-
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="flex flex-col sm:flex-row gap-6 justify-center"
-          >
-            <Link href="/register" className="w-full sm:w-auto">
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button size="lg" className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground text-lg px-8 py-6 shadow-lg">
-                  Get Started <ArrowRight className="w-5 h-5 inline-block ml-2" />
-                </Button>
-              </motion.div>
-            </Link>
-            <a 
-              href="https://github.com/adhamafis/curiopay"
-              target="_blank"
-              rel="noopener noreferrer" 
-              className="w-full sm:w-auto"
+            
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.5, duration: 0.5 }}
+              className="hidden lg:block relative"
             >
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button size="lg" variant="outline" className="w-full sm:w-auto text-lg px-8 py-6 border-2 hover:bg-secondary/50">
-                  <GitHubLogoIcon className="w-5 h-5 inline-block mr-2" />
-                  View on GitHub
-                </Button>
-              </motion.div>
-            </a>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Video Showcase */}
-      <section className="py-12 px-4 sm:px-6 lg:px-8 bg-background">
-        <div className="max-w-5xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            className="relative aspect-video rounded-xl overflow-hidden border shadow-xl"
-          >
-            <div className="absolute inset-0 bg-gradient-to-tr from-background/10 to-background/5" />
-            {isMounted && (
-              <iframe
-                src="https://drive.google.com/file/d/1CRqOTKQQ96kuANcnQ-1mIuy5FceSuhkt/preview?embedded=true"
-                className="w-full h-full absolute inset-0"
-                style={{ border: 'none' }}
-                allowFullScreen
-                loading="eager"
-              />
-            )}
-          </motion.div>
-          <div className="text-center mt-6">
-            <p className="text-sm text-muted-foreground">
-              Watch how CurioPay helps you manage your finances with AI-powered insights
-            </p>
+              <div className="relative rounded-xl overflow-hidden shadow-2xl border border-muted">
+                <div className="absolute top-0 left-0 right-0 h-8 bg-muted flex items-center px-4">
+                  <div className="flex gap-2">
+                    <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                    <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                    <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                  </div>
+                  <div className="ml-4 text-xs text-muted-foreground">CurioPay Demo</div>
+                </div>
+                <div className="pt-8">
+                  {!isMounted ? (
+                    <div className="w-full aspect-video bg-muted animate-pulse flex items-center justify-center">
+                      <Sparkles className="w-8 h-8 text-muted-foreground/50" />
+                    </div>
+                  ) : (
+                    <iframe
+                      src="https://drive.google.com/file/d/1CRqOTKQQ96kuANcnQ-1mIuy5FceSuhkt/preview?embedded=true"
+                      className="w-full aspect-video"
+                      style={{ border: 'none' }}
+                      allowFullScreen
+                      loading="eager"
+                      title="CurioPay Demo Video"
+                    />
+                  )}
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent pointer-events-none" />
+              </div>
+              <div className="text-center mt-4">
+                <p className="text-sm text-muted-foreground">
+                  Watch how CurioPay helps you manage your finances with AI-powered insights
+                </p>
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -277,6 +331,103 @@ export default function Home() {
                 <div className="text-sm sm:text-base text-muted-foreground font-medium">{stat.label}</div>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Comparison Section */}
+      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-background to-secondary/20">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            className="text-center mb-12 sm:mb-16"
+          >
+            <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-3 sm:mb-4">
+              Why Choose CurioPay?
+            </h2>
+            <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto">
+              See how CurioPay compares to other financial management solutions
+            </p>
+          </motion.div>
+          
+          <div className="overflow-x-auto pb-4">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+              className="min-w-[768px]"
+            >
+              <div className="grid grid-cols-4 gap-4 mb-4">
+                <div className="col-span-1"></div>
+                <div className="col-span-1 text-center">
+                  <div className="flex items-center justify-center gap-2 font-semibold text-lg">
+                    <Sparkles className="w-5 h-5 text-primary" />
+                    <span>CurioPay</span>
+                  </div>
+                </div>
+                <div className="col-span-1 text-center text-muted-foreground">
+                  <span>Proprietary Solution A</span>
+                </div>
+                <div className="col-span-1 text-center text-muted-foreground">
+                  <span>Proprietary Solution B</span>
+                </div>
+              </div>
+              
+              {[
+                {
+                  feature: "Cost",
+                  curiopay: "100% Free",
+                  solutionA: "Subscription",
+                  solutionB: "Freemium"
+                },
+                {
+                  feature: "Open Source",
+                  curiopay: "Yes (MIT License)",
+                  solutionA: "No",
+                  solutionB: "No"
+                },
+                {
+                  feature: "Privacy",
+                  curiopay: "Local Deployment",
+                  solutionA: "Cloud Only",
+                  solutionB: "Cloud Only"
+                },
+                {
+                  feature: "AI Integration",
+                  curiopay: "Multiple LLMs",
+                  solutionA: "Limited",
+                  solutionB: "Single Provider"
+                },
+                {
+                  feature: "Data Control",
+                  curiopay: "Complete",
+                  solutionA: "Limited",
+                  solutionB: "Limited"
+                }
+              ].map((row, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 + index * 0.1 }}
+                  className="grid grid-cols-4 gap-4 mb-4"
+                >
+                  <div className="col-span-1 font-medium">{row.feature}</div>
+                  <div className="col-span-1 text-center">
+                    <Badge variant="default" className="bg-primary/20 text-primary hover:bg-primary/30 font-medium">
+                      {row.curiopay}
+                    </Badge>
+                  </div>
+                  <div className="col-span-1 text-center text-muted-foreground">
+                    {row.solutionA}
+                  </div>
+                  <div className="col-span-1 text-center text-muted-foreground">
+                    {row.solutionB}
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
           </div>
         </div>
       </section>
@@ -315,32 +466,38 @@ export default function Home() {
                   {
                     title: "Enhanced Dashboard",
                     description: "Modern, paginated interface for expense and income listings with real-time updates",
-                    badge: "Core"
+                    badge: "Core",
+                    icon: <LineChart className="w-10 h-10 text-blue-500" />
                   },
                   {
                     title: "Intelligent Chat",
                     description: "Advanced chat with Markdown support for better financial assistance",
-                    badge: "AI"
+                    badge: "AI",
+                    icon: <Brain className="w-10 h-10 text-purple-500" />
                   },
                   {
                     title: "Smart Categories",
                     description: "Robust validation for categories and payment methods with informative feedback",
-                    badge: "Core"
+                    badge: "Core",
+                    icon: <LineChart className="w-10 h-10 text-blue-500" />
                   },
                   {
                     title: "Budget Alerts",
                     description: "Get notified via in-app notifications and email when you exceed your budget",
-                    badge: "Core"
+                    badge: "Core",
+                    icon: <LineChart className="w-10 h-10 text-blue-500" />
                   },
                   {
                     title: "Recurring Expenses",
                     description: "Set automatic tracking for recurring payments and subscriptions",
-                    badge: "Core"
+                    badge: "Core",
+                    icon: <LineChart className="w-10 h-10 text-blue-500" />
                   },
                   {
                     title: "API Access",
                     description: "Full API documentation available at /api-docs for developers",
-                    badge: "Dev"
+                    badge: "Dev",
+                    icon: <GitHubLogoIcon className="w-10 h-10 text-green-500" />
                   }
                 ].map((feature, index) => (
                   <motion.div
@@ -350,21 +507,26 @@ export default function Home() {
                     transition={{ delay: index * 0.1 }}
                     whileHover={{ scale: 1.02 }}
                   >
-                    <Card className="h-full transition-all hover:shadow-lg bg-card">
-                      <CardHeader>
-                        <div className="flex items-center justify-between">
-                          <CardTitle className="text-xl text-gray-900">{feature.title}</CardTitle>
-                          <Badge variant="secondary" className={cn(
-                            "bg-blue-50 text-blue-700",
-                            feature.badge === "AI" && "bg-purple-50 text-purple-700",
-                            feature.badge === "Dev" && "bg-green-50 text-green-700"
-                          )}>
-                            {feature.badge}
-                          </Badge>
+                    <Card className="h-full transition-all hover:shadow-lg bg-card overflow-hidden border-t-4 border-t-blue-500">
+                      <CardHeader className="pb-2">
+                        <div className="flex items-start justify-between">
+                          <div>
+                            <CardTitle className="text-xl text-gray-900">{feature.title}</CardTitle>
+                            <Badge variant="secondary" className={cn(
+                              "mt-1 bg-blue-50 text-blue-700",
+                              feature.badge === "AI" && "bg-purple-50 text-purple-700",
+                              feature.badge === "Dev" && "bg-green-50 text-green-700"
+                            )}>
+                              {feature.badge}
+                            </Badge>
+                          </div>
+                          <div className="opacity-75">
+                            {feature.icon}
+                          </div>
                         </div>
                       </CardHeader>
                       <CardContent>
-                        <CardDescription className="text-gray-600">{feature.description}</CardDescription>
+                        <CardDescription className="text-gray-600 text-sm sm:text-base">{feature.description}</CardDescription>
                       </CardContent>
                     </Card>
                   </motion.div>
@@ -374,19 +536,42 @@ export default function Home() {
             <TabsContent value="security">
               <Card className="border bg-card/50 backdrop-blur-sm">
                 <CardHeader>
-                  <CardTitle>Privacy-First Approach</CardTitle>
-                  <CardDescription>Your data stays under your control</CardDescription>
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <CardTitle>Privacy-First Approach</CardTitle>
+                      <CardDescription>Your data stays under your control</CardDescription>
+                    </div>
+                    <Shield className="w-12 h-12 text-blue-500" />
+                  </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <h4 className="font-semibold">Local Deployment</h4>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <motion.div 
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      className="space-y-2 p-4 rounded-lg bg-blue-50/50 border border-blue-100"
+                    >
+                      <h4 className="font-semibold flex items-center gap-2">
+                        <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                          <Shield className="w-4 h-4 text-blue-700" />
+                        </div>
+                        Local Deployment
+                      </h4>
                       <p className="text-sm text-gray-600">Deploy on your own infrastructure with our easy setup script</p>
-                    </div>
-                    <div className="space-y-2">
-                      <h4 className="font-semibold">Secure Storage</h4>
+                    </motion.div>
+                    <motion.div 
+                      initial={{ opacity: 0, x: 20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      className="space-y-2 p-4 rounded-lg bg-blue-50/50 border border-blue-100"
+                    >
+                      <h4 className="font-semibold flex items-center gap-2">
+                        <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                          <Shield className="w-4 h-4 text-blue-700" />
+                        </div>
+                        Secure Storage
+                      </h4>
                       <p className="text-sm text-gray-600">API keys stored securely in your browser</p>
-                    </div>
+                    </motion.div>
                   </div>
                 </CardContent>
               </Card>
@@ -394,19 +579,62 @@ export default function Home() {
             <TabsContent value="ai">
               <Card className="border bg-card/50 backdrop-blur-sm">
                 <CardHeader>
-                  <CardTitle>Multiple LLM Providers</CardTitle>
-                  <CardDescription>Choose your preferred AI provider for financial insights</CardDescription>
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <CardTitle>Multiple LLM Providers</CardTitle>
+                      <CardDescription>Choose your preferred AI provider for financial insights</CardDescription>
+                    </div>
+                    <Brain className="w-12 h-12 text-purple-500" />
+                  </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <motion.div 
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      className="space-y-4"
+                    >
                       <h4 className="font-semibold">Current Support</h4>
-                      <p className="text-sm text-gray-600">Groq and Ollama, with Cohere integration nearly complete</p>
-                    </div>
-                    <div className="space-y-2">
+                      <div className="flex flex-wrap gap-4">
+                        <div className="flex items-center gap-2 p-2 rounded-lg border bg-card">
+                          <Image src="/groq.svg" alt="Groq" width={24} height={24} className="w-6 h-6" />
+                          <span className="text-sm font-medium">Groq</span>
+                        </div>
+                        <div className="flex items-center gap-2 p-2 rounded-lg border bg-card">
+                          <Image src="/ollama.png" alt="Ollama" width={24} height={24} className="w-6 h-6" />
+                          <span className="text-sm font-medium">Ollama</span>
+                        </div>
+                        <div className="flex items-center gap-2 p-2 rounded-lg border bg-card">
+                          <Image src="/cohere.svg" alt="Cohere" width={24} height={24} className="w-6 h-6" />
+                          <span className="text-sm font-medium">Cohere (Soon)</span>
+                        </div>
+                      </div>
+                    </motion.div>
+                    <motion.div 
+                      initial={{ opacity: 0, x: 20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      className="space-y-4"
+                    >
                       <h4 className="font-semibold">Coming Soon</h4>
-                      <p className="text-sm text-gray-600">Support for Gemini, Anthropic, OpenAI, and Azure</p>
-                    </div>
+                      <div className="flex flex-wrap gap-4">
+                        <div className="flex items-center gap-2 p-2 rounded-lg border bg-card/50">
+                          <Image src="/gemini.svg" alt="Gemini" width={24} height={24} className="w-6 h-6" />
+                          <span className="text-sm font-medium">Gemini</span>
+                        </div>
+                        <div className="flex items-center gap-2 p-2 rounded-lg border bg-card/50">
+                          <Image src="/anthropic.svg" alt="Anthropic" width={24} height={24} className="w-6 h-6" />
+                          <span className="text-sm font-medium">Anthropic</span>
+                        </div>
+                        <div className="flex items-center gap-2 p-2 rounded-lg border bg-card/50">
+                          <Image src="/openai.svg" alt="OpenAI" width={24} height={24} className="w-6 h-6" />
+                          <span className="text-sm font-medium">OpenAI</span>
+                        </div>
+                        <div className="flex items-center gap-2 p-2 rounded-lg border bg-card/50">
+                          <Image src="/azure.svg" alt="Azure" width={24} height={24} className="w-6 h-6" />
+                          <span className="text-sm font-medium">Azure</span>
+                        </div>
+                      </div>
+                    </motion.div>
                   </div>
                 </CardContent>
               </Card>
@@ -467,6 +695,134 @@ export default function Home() {
                 </Card>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Installation Guide Preview */}
+      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-background to-secondary/20">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            className="text-center mb-12 sm:mb-16"
+          >
+            <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-3 sm:mb-4">
+              Quick Installation Guide
+            </h2>
+            <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto">
+              Get up and running in minutes with our simple setup process
+            </p>
+          </motion.div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              className="space-y-6"
+            >
+              <div className="space-y-2">
+                <h3 className="text-2xl font-bold">System Requirements</h3>
+                <ul className="list-disc list-inside space-y-2 text-muted-foreground">
+                  <li>Node.js 18+ and npm</li>
+                  <li>Docker and Docker Compose</li>
+                  <li>PostgreSQL (handled by Docker)</li>
+                  <li>2GB RAM minimum</li>
+                  <li>Any modern operating system</li>
+                </ul>
+              </div>
+              
+              <div className="space-y-4">
+                <h3 className="text-2xl font-bold">Installation Steps</h3>
+                
+                <div className="space-y-4">
+                  <div className="p-4 rounded-lg border bg-card/50">
+                    <h4 className="font-semibold flex items-center gap-2 mb-2">
+                      <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">1</div>
+                      Clone the repository
+                    </h4>
+                    <div className="bg-black rounded-md p-3 overflow-x-auto">
+                      <pre className="text-white text-sm font-mono">git clone https://github.com/adhamafis/curiopay.git</pre>
+                    </div>
+                  </div>
+                  
+                  <div className="p-4 rounded-lg border bg-card/50">
+                    <h4 className="font-semibold flex items-center gap-2 mb-2">
+                      <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">2</div>
+                      Run the setup script
+                    </h4>
+                    <div className="bg-black rounded-md p-3 overflow-x-auto">
+                      <pre className="text-white text-sm font-mono">cd curiopay && chmod +x setup.sh && ./setup.sh</pre>
+                    </div>
+                  </div>
+                  
+                  <div className="p-4 rounded-lg border bg-card/50">
+                    <h4 className="font-semibold flex items-center gap-2 mb-2">
+                      <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">3</div>
+                      Configuration (Interactive)
+                    </h4>
+                    <p className="text-sm text-muted-foreground mb-3">The setup script will guide you through:</p>
+                    <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
+                      <li>Environment variables setup</li>
+                      <li>Database initialization</li>
+                      <li>Optional services configuration</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              className="relative rounded-xl overflow-hidden border shadow-lg bg-card"
+            >
+              <div className="absolute top-0 left-0 right-0 h-8 bg-muted flex items-center px-4">
+                <div className="flex gap-2">
+                  <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                  <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                  <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                </div>
+                <div className="ml-4 text-xs text-muted-foreground">Terminal</div>
+              </div>
+              <div className="pt-8 p-4 bg-black text-white font-mono text-sm">
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  <p className="text-green-400">$ git clone https://github.com/adhamafis/curiopay.git</p>
+                  <p className="text-white">Cloning into 'curiopay'...</p>
+                  <p className="text-white">remote: Enumerating objects: 1242, done.</p>
+                  <p className="text-white">remote: Counting objects: 100% (1242/1242), done.</p>
+                  <p className="text-white">remote: Compressing objects: 100% (842/842), done.</p>
+                  <p className="text-white">Receiving objects: 100% (1242/1242), 2.3 MiB | 5.2 MiB/s, done.</p>
+                  <p className="text-white">Resolving deltas: 100% (624/624), done.</p>
+                  <p className="text-green-400 mt-2">$ cd curiopay && chmod +x setup.sh && ./setup.sh</p>
+                  <p className="text-blue-400">🚀 Setting up CurioPay development environment...</p>
+                  <p className="text-blue-400">🔧 Configuring environment variables...</p>
+                  <p className="text-white">Press Enter to use default values or input your own.</p>
+                  <p className="text-blue-400">📦 Installing dependencies...</p>
+                  <p className="text-blue-400">🔄 Setting up database...</p>
+                  <p className="text-blue-400">🐳 Starting database container...</p>
+                  <p className="text-green-400">✅ Database setup complete!</p>
+                  <p className="text-blue-400">🚀 Starting all services...</p>
+                  <p className="text-green-400">✅ Setup complete!</p>
+                  <p className="text-blue-400">🌐 Application is running at http://localhost:3000</p>
+                  <p className="text-blue-400">✨ Prisma Studio is available at http://localhost:5555</p>
+                  <div className="mt-1 animate-pulse">▌</div>
+                </motion.div>
+              </div>
+            </motion.div>
+          </div>
+          
+          <div className="mt-12 text-center">
+            <Link href="https://github.com/adhamafis/curiopay/blob/main/README.md" target="_blank" rel="noopener noreferrer">
+              <Button variant="outline" size="lg" className="gap-2">
+                <span>View Full Documentation</span>
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
