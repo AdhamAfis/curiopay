@@ -66,15 +66,10 @@ const screenshots = [
     image: "/screenshots/llm-providers.png" // Updated path
   },
   {
-    title: "Budget Tracking",
-    description: "Set and monitor budgets with visual progress indicators",
-    image: "/screenshots/budget-tracking.png" // Updated path
+    title: "LLM Chat",
+    description: "Chat with your LLM provider to get personalized financial advice",
+    image: "/screenshots/llm-chat.png" // Updated path
   },
-  {
-    title: "Expense Categories",
-    description: "Organize your spending with customizable categories",
-    image: "/screenshots/categories.png" // Updated path
-  }
 ];
 
 const faqs = [
@@ -553,7 +548,7 @@ export default function Home() {
                     <ImageIcon className="w-12 h-12 text-muted-foreground/50" />
                   </div>
                 ) : (
-                  <div className="w-full aspect-[16/9] bg-muted flex items-center justify-center relative overflow-hidden">
+                  <div className="w-full h-full flex items-center justify-center relative overflow-hidden rounded-lg">
                     {/* Placeholder for actual screenshots */}
                     <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/30">
                       <div className="text-center p-8 max-w-md">
@@ -563,13 +558,17 @@ export default function Home() {
                       </div>
                     </div>
                     
-                    {/* Uncommented Image component - will display images when they're available */}
-                    <Image 
-                      src={screenshots[currentScreenshot].image}
-                      alt={screenshots[currentScreenshot].title}
-                      fill
-                      className="object-cover opacity-0" // Initially hidden until real screenshots are added
-                    />
+                    {/* Responsive image that maintains aspect ratio */}
+                    <div className="relative w-full h-auto aspect-[3024/1646]">
+                      <Image 
+                        src={screenshots[currentScreenshot].image}
+                        alt={screenshots[currentScreenshot].title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
+                        className="object-contain"
+                        priority
+                      />
+                    </div>
                   </div>
                 )}
               </div>
@@ -1010,9 +1009,7 @@ export default function Home() {
               <div className="space-y-2">
                 <h3 className="text-2xl font-bold">System Requirements</h3>
                 <ul className="list-disc list-inside space-y-2 text-muted-foreground">
-                  <li>Node.js 18+ and npm</li>
                   <li>Docker and Docker Compose</li>
-                  <li>PostgreSQL (handled by Docker)</li>
                   <li>2GB RAM minimum</li>
                   <li>Any modern operating system</li>
                 </ul>
