@@ -112,24 +112,6 @@ export default function Home() {
   useEffect(() => {
     setIsMounted(true);
     
-    // Add structured data for SEO
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.innerHTML = JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "CurioPay",
-      "applicationCategory": "FinanceApplication",
-      "operatingSystem": "Any",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      },
-      "description": "Privacy-focused budget tracking with AI-powered insights. Forever free, completely open source."
-    });
-    document.head.appendChild(script);
-    
     // Add scroll event listener
     const handleScroll = () => {
       if (window.scrollY > 10) {
@@ -142,7 +124,6 @@ export default function Home() {
     window.addEventListener('scroll', handleScroll);
     
     return () => {
-      document.head.removeChild(script);
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
@@ -169,7 +150,7 @@ export default function Home() {
         <meta property="og:title" content="CurioPay - Open Source Budget Tracking" />
         <meta property="og:description" content="Privacy-focused budget tracking with AI-powered insights. Forever free, completely open source." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://curiopay.com" />
+        <meta property="og:url" content="https://curiopay.vercel.com" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="CurioPay - Open Source Budget Tracking" />
         <meta name="twitter:description" content="Privacy-focused budget tracking with AI-powered insights. Forever free, completely open source." />
@@ -315,7 +296,11 @@ export default function Home() {
       </nav>
 
       {/* Hero Section - Enhanced with more animation and visual appeal */}
-      <section className="pt-28 sm:pt-32 pb-16 sm:pb-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden bg-gradient-to-b from-background to-secondary/20">
+      <section 
+        className="pt-28 sm:pt-32 pb-16 sm:pb-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden bg-gradient-to-b from-background to-secondary/20"
+        itemScope
+        itemType="https://schema.org/WebPage"
+      >
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute inset-0 bg-grid-blue-500/[0.03] bg-[size:32px] [mask-image:radial-gradient(white,transparent_85%)]" />
         </div>
@@ -371,7 +356,10 @@ export default function Home() {
                   className="absolute -inset-2 rounded-xl bg-blue-500/10 blur-xl"
                 />
                 <div className="relative">
-                  <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-foreground">
+                  <h1 
+                    className="text-4xl sm:text-5xl md:text-7xl font-bold text-foreground"
+                    itemProp="headline"
+                  >
                     100% Free & <br />
                     <span className="text-primary bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400 text-transparent">Open Source</span>
                   </h1>
@@ -393,6 +381,7 @@ export default function Home() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2, duration: 0.5 }}
                 className="text-lg sm:text-xl md:text-2xl text-muted-foreground mb-8 sm:mb-12 max-w-2xl mx-auto lg:mx-0 px-4 sm:px-0"
+                itemProp="description"
               >
                 Privacy-focused budget tracking with AI-powered insights. Forever free, completely open source.
               </motion.p>
@@ -646,135 +635,42 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Comparison Section */}
-      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-background to-secondary/20">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            className="text-center mb-12 sm:mb-16"
-          >
-            <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-3 sm:mb-4">
-              Why Choose CurioPay?
-            </h2>
-            <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto">
-              See how CurioPay compares to other financial management solutions
-            </p>
-          </motion.div>
-          
-          <div className="overflow-x-auto pb-4">
-            <motion.div 
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              className="min-w-[768px]"
-            >
-              <div className="grid grid-cols-4 gap-4 mb-4">
-                <div className="col-span-1"></div>
-                <div className="col-span-1 text-center">
-                  <div className="flex items-center justify-center gap-2 font-semibold text-lg">
-                    <Sparkles className="w-5 h-5 text-primary" />
-                    <span>CurioPay</span>
-                  </div>
-                </div>
-                <div className="col-span-1 text-center text-muted-foreground">
-                  <span>Proprietary Solution A</span>
-                </div>
-                <div className="col-span-1 text-center text-muted-foreground">
-                  <span>Proprietary Solution B</span>
-                </div>
-              </div>
-              
-              {[
-                {
-                  feature: "Cost",
-                  curiopay: "100% Free",
-                  solutionA: "Subscription",
-                  solutionB: "Freemium"
-                },
-                {
-                  feature: "Open Source",
-                  curiopay: "Yes (MIT License)",
-                  solutionA: "No",
-                  solutionB: "No"
-                },
-                {
-                  feature: "Privacy",
-                  curiopay: "Local Deployment",
-                  solutionA: "Cloud Only",
-                  solutionB: "Cloud Only"
-                },
-                {
-                  feature: "AI Integration",
-                  curiopay: "Multiple LLMs",
-                  solutionA: "Limited",
-                  solutionB: "Single Provider"
-                },
-                {
-                  feature: "LLM Providers",
-                  curiopay: "9 Providers",
-                  solutionA: "1-2 Providers",
-                  solutionB: "1 Provider"
-                },
-                {
-                  feature: "Data Control",
-                  curiopay: "Complete",
-                  solutionA: "Limited",
-                  solutionB: "Limited"
-                }
-              ].map((row, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 + index * 0.1 }}
-                  className="grid grid-cols-4 gap-4 mb-4"
-                >
-                  <div className="col-span-1 font-medium">{row.feature}</div>
-                  <div className="col-span-1 text-center">
-                    <Badge variant="default" className="bg-primary/20 text-primary hover:bg-primary/30 font-medium">
-                      {row.curiopay}
-                    </Badge>
-                  </div>
-                  <div className="col-span-1 text-center text-muted-foreground">
-                    {row.solutionA}
-                  </div>
-                  <div className="col-span-1 text-center text-muted-foreground">
-                    {row.solutionB}
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
       {/* Features Section */}
-      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-background to-secondary/20">
+      <section 
+        className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-background to-secondary/20"
+        aria-labelledby="features-heading"
+        itemScope
+        itemType="https://schema.org/ItemList"
+      >
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             className="text-center mb-12 sm:mb-16"
           >
-            <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-3 sm:mb-4">
+            <h2 
+              id="features-heading" 
+              className="text-3xl sm:text-4xl font-bold text-foreground mb-3 sm:mb-4"
+              itemProp="name"
+            >
               Core Features
             </h2>
+            <meta itemProp="itemListOrder" content="Unordered" />
             <p className="text-lg sm:text-xl text-muted-foreground">Everything included, no premium features or hidden costs</p>
           </motion.div>
           <Tabs defaultValue="features" className="w-full">
             <TabsList className="grid w-full grid-cols-3 mb-8 sm:mb-12 bg-card/50 p-1 rounded-lg">
               <TabsTrigger value="features" className="text-sm sm:text-base flex items-center gap-1 sm:gap-2 data-[state=active]:bg-white data-[state=active]:text-blue-600">
-                <LineChart className="w-3 h-3 sm:w-4 sm:h-4" />
-                Features
+                <LineChart className="w-3 h-3 sm:w-4 sm:h-4" aria-hidden="true" />
+                <span>Features</span>
               </TabsTrigger>
               <TabsTrigger value="security" className="text-sm sm:text-base flex items-center gap-1 sm:gap-2 data-[state=active]:bg-white data-[state=active]:text-blue-600">
-                <Shield className="w-3 h-3 sm:w-4 sm:h-4" />
-                Security
+                <Shield className="w-3 h-3 sm:w-4 sm:h-4" aria-hidden="true" />
+                <span>Security</span>
               </TabsTrigger>
               <TabsTrigger value="ai" className="text-sm sm:text-base flex items-center gap-1 sm:gap-2 data-[state=active]:bg-white data-[state=active]:text-blue-600">
-                <Brain className="w-3 h-3 sm:w-4 sm:h-4" />
-                AI Integration
+                <Brain className="w-3 h-3 sm:w-4 sm:h-4" aria-hidden="true" />
+                <span>AI Integration</span>
               </TabsTrigger>
             </TabsList>
             <TabsContent value="features">
@@ -784,37 +680,37 @@ export default function Home() {
                     title: "Enhanced Dashboard",
                     description: "Modern, paginated interface for expense and income listings with real-time updates",
                     badge: "Core",
-                    icon: <LineChart className="w-10 h-10 text-blue-500" />
+                    icon: <LineChart className="w-10 h-10 text-blue-500" aria-hidden="true" />
                   },
                   {
                     title: "Intelligent Chat",
                     description: "Advanced chat with Markdown support for better financial assistance",
                     badge: "AI",
-                    icon: <Brain className="w-10 h-10 text-purple-500" />
+                    icon: <Brain className="w-10 h-10 text-purple-500" aria-hidden="true" />
                   },
                   {
                     title: "Smart Categories",
                     description: "Robust validation for categories and payment methods with informative feedback",
                     badge: "Core",
-                    icon: <LineChart className="w-10 h-10 text-blue-500" />
+                    icon: <LineChart className="w-10 h-10 text-blue-500" aria-hidden="true" />
                   },
                   {
                     title: "Budget Alerts",
                     description: "Get notified via in-app notifications and email when you exceed your budget",
                     badge: "Core",
-                    icon: <LineChart className="w-10 h-10 text-blue-500" />
+                    icon: <LineChart className="w-10 h-10 text-blue-500" aria-hidden="true" />
                   },
                   {
                     title: "Recurring Expenses",
                     description: "Set automatic tracking for recurring payments and subscriptions",
                     badge: "Core",
-                    icon: <LineChart className="w-10 h-10 text-blue-500" />
+                    icon: <LineChart className="w-10 h-10 text-blue-500" aria-hidden="true" />
                   },
                   {
                     title: "API Access",
                     description: "Full API documentation available at /api-docs for developers",
                     badge: "Dev",
-                    icon: <GitHubLogoIcon className="w-10 h-10 text-green-500" />
+                    icon: <GitHubLogoIcon className="w-10 h-10 text-green-500" aria-hidden="true" />
                   }
                 ].map((feature, index) => (
                   <motion.div
@@ -822,30 +718,32 @@ export default function Home() {
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    whileHover={{ scale: 1.02 }}
+                    className="bg-card rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow"
+                    itemScope
+                    itemProp="itemListElement"
+                    itemType="https://schema.org/ListItem"
                   >
-                    <Card className="h-full transition-all hover:shadow-lg bg-card overflow-hidden border-t-4 border-t-blue-500">
-                      <CardHeader className="pb-2">
-                        <div className="flex items-start justify-between">
-                          <div>
-                            <CardTitle className="text-xl text-gray-900">{feature.title}</CardTitle>
-                            <Badge variant="secondary" className={cn(
-                              "mt-1 bg-blue-50 text-blue-700",
-                              feature.badge === "AI" && "bg-purple-50 text-purple-700",
-                              feature.badge === "Dev" && "bg-green-50 text-green-700"
-                            )}>
-                              {feature.badge}
-                            </Badge>
-                          </div>
-                          <div className="opacity-75">
-                            {feature.icon}
-                          </div>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        <CardDescription className="text-gray-600 text-sm sm:text-base">{feature.description}</CardDescription>
-                      </CardContent>
-                    </Card>
+                    <meta itemProp="position" content={`${index + 1}`} />
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="p-2 bg-primary/10 rounded-md">
+                        {feature.icon}
+                      </div>
+                      <Badge variant="outline" className="text-xs">
+                        {feature.badge}
+                      </Badge>
+                    </div>
+                    <h3 
+                      className="text-xl font-semibold mb-2"
+                      itemProp="name"
+                    >
+                      {feature.title}
+                    </h3>
+                    <p 
+                      className="text-muted-foreground"
+                      itemProp="description"
+                    >
+                      {feature.description}
+                    </p>
                   </motion.div>
                 ))}
               </div>

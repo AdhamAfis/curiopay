@@ -5,6 +5,7 @@ import { Providers } from "./providers";
 import { Toaster } from "@/components/ui/toaster";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { JsonLd } from "@/components/JsonLd";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -18,19 +19,37 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "CurioPay - Personal Finance Management",
+  title: "CurioPay - AI-Powered Personal Finance Management",
   description:
     "Master your money with CurioPay's AI-powered finance tools. Smart budgeting, expense tracking, and AI-assisted financial planning with LLM integration to help you achieve your financial goals.",
   keywords:
-    "personal finance, money management, budgeting, expense tracking, financial planning, AI finance, LLM integration, financial assistant",
+    "personal finance, money management, budgeting, expense tracking, financial planning, AI finance, LLM integration, financial assistant, financial goals, expense analysis",
+  authors: [{ name: "CurioPay Team" }],
+  creator: "CurioPay",
+  publisher: "CurioPay",
   openGraph: {
-    title: "CurioPay - Personal Finance Management",
-    description: "Master your money with CurioPay's AI-powered finance tools",
+    title: "CurioPay - AI-Powered Personal Finance Management",
+    description: "Master your money with CurioPay's AI-powered finance tools. Smart budgeting, expense tracking, and financial planning.",
     type: "website",
     locale: "en_US",
     url: "https://curiopay.vercel.app",
+    siteName: "CurioPay",
+    images: [
+      {
+        url: "https://curiopay.vercel.app/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "CurioPay - AI-Powered Personal Finance Management",
+      },
+    ],
   },
-  canonical: "https://curiopay.vercel.app",
+  twitter: {
+    card: "summary_large_image",
+    title: "CurioPay - AI-Powered Personal Finance Management",
+    description: "Master your money with CurioPay's AI-powered finance tools",
+    images: ["https://curiopay.vercel.app/og-image.jpg"],
+    creator: "@curiopay",
+  },
   robots: {
     index: true,
     follow: true,
@@ -42,6 +61,13 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+  metadataBase: new URL("https://curiopay.vercel.app"),
+  alternates: {
+    languages: {
+      'en-US': "/",
+    },
+  },
+  category: "Finance",
 };
 
 export default function RootLayout({
@@ -56,10 +82,12 @@ export default function RootLayout({
           name="google-site-verification"
           content="u8eAN98uGHcSwo0oIRKBS7fKcjcjbRSWwpEVN5wtmRw"
         />
+        <link rel="canonical" href="https://curiopay.vercel.app" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-background font-sans selection:bg-primary/10`}
       >
+        <JsonLd />
         <Analytics />
         <SpeedInsights />
         <Providers>{children}</Providers>
