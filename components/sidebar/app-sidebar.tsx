@@ -1,8 +1,8 @@
 "use client";
-import { Wallet, Home, Receipt, Settings, AlertCircle, Bot, Link as LinkIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
 
 import {
   Sidebar,
@@ -11,58 +11,72 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 
-import { ChevronUp, User, LogOut } from "lucide-react";
+import { 
+  ChevronUp, 
+  User, 
+  LogOut,
+  Home,
+  FileCode2,
+  Settings,
+  Wallet,
+  Receipt,
+  AlertCircle,
+  Bot
+} from "lucide-react";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useRouter } from "next/navigation";
-import { signOut } from "next-auth/react";
 
-// Menu items.
-const items = [
+const mainNav = [
   {
     title: "Home",
-    url: "/dashboard",
     icon: Home,
+    url: "/dashboard",
   },
   {
     title: "Expenses",
-    url: "/dashboard/expenses",
     icon: Receipt,
+    url: "/dashboard/expenses",
   },
   {
     title: "Income",
-    url: "/dashboard/income",
     icon: Wallet,
+    url: "/dashboard/income",
   },
+];
+
+const toolsNav = [
   {
-    title: "Chat With AI Assistant",
-    url: "/dashboard/chat",
+    title: "AI Assistant",
     icon: Bot,
+    url: "/dashboard/chat",
   },
   {
     title: "Report Issue",
-    url: "/dashboard/report",
     icon: AlertCircle,
+    url: "/dashboard/report",
   },
   {
     title: "Settings",
-    url: "/dashboard/settings",
     icon: Settings,
-  }
+    url: "/dashboard/settings",
+  },
 ];
 
 export function AppSidebar() {
   const router = useRouter();
   const { data: session } = useSession();
+  
   const handleSignOut = async () => {
     try {
       await signOut();
@@ -73,19 +87,44 @@ export function AppSidebar() {
   };
 
   return (
-    <Sidebar>
+    <Sidebar variant="sidebar" collapsible="icon">
+      <SidebarHeader>
+        <div className="flex h-16 items-center justify-center transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+          <span className="text-lg font-bold truncate transition-opacity duration-200 ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:opacity-0">
+            CurioPay
+          </span>
+          <div className="absolute opacity-0 transition-opacity duration-200 ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:opacity-100">
+            <Wallet className="h-5 w-5" />
+          </div>
+        </div>
+      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-            <SidebarGroupLabel >
-              <h1>CurioPay</h1>
-            </SidebarGroupLabel>
+          <SidebarGroupLabel>Main</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
+              {mainNav.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton asChild tooltip={item.title}>
                     <Link href={item.url} className="flex items-center gap-2">
-                      <item.icon />
+                      <item.icon className="h-4 w-4" />
+                      <span>{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupLabel>Tools</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {toolsNav.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild tooltip={item.title}>
+                    <Link href={item.url} className="flex items-center gap-2">
+                      <item.icon className="h-4 w-4" />
                       <span>{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
@@ -98,10 +137,14 @@ export function AppSidebar() {
       <SidebarFooter>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <SidebarMenuButton>
-              <User />
-              {session?.user?.name || 'User'}
-              <ChevronUp className="ml-auto" />
+            <SidebarMenuButton className="w-full">
+              <div className="flex w-full items-center gap-2">
+                <User className="h-4 w-4" />
+                <span className="flex-1 truncate text-left">
+                  {session?.user?.name || 'User'}
+                </span>
+                <ChevronUp className="h-4 w-4 opacity-50" />
+              </div>
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
