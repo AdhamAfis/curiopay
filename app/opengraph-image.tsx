@@ -2,7 +2,17 @@ import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
 
-export async function GET() {
+// Image metadata
+export const alt = 'CurioPay - AI-Powered Personal Finance Management';
+export const size = {
+  width: 1200,
+  height: 630,
+};
+
+export const contentType = 'image/png';
+
+// Image generation
+export default async function Image() {
   return new ImageResponse(
     (
       <div
@@ -90,8 +100,7 @@ export async function GET() {
       </div>
     ),
     {
-      width: 1200,
-      height: 630,
+      ...size,
     },
   );
 } 
