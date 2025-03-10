@@ -24,7 +24,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Sparkles, ArrowRight, Shield, Brain, LineChart } from "lucide-react";
+import { Sparkles, ArrowRight, Shield, Brain, LineChart, Image as ImageIcon, ChevronLeft, ChevronRight, ExternalLink } from "lucide-react";
 import Head from "next/head";
 
 const benefits = [
@@ -48,6 +48,35 @@ const benefits = [
   }
 ];
 
+// Add screenshot gallery data
+const screenshots = [
+  {
+    title: "Dashboard Overview",
+    description: "Get a complete view of your finances with our intuitive dashboard",
+    image: "/screenshots/dashboard.png" // Updated path
+  },
+  {
+    title: "AI-Powered Insights",
+    description: "Receive personalized financial advice through our AI integration",
+    image: "/screenshots/ai-insights.png" // Updated path
+  },
+  {
+    title: "LLM Provider Selection",
+    description: "Choose from 9 different LLM providers for AI-powered financial insights",
+    image: "/screenshots/llm-providers.png" // Updated path
+  },
+  {
+    title: "Budget Tracking",
+    description: "Set and monitor budgets with visual progress indicators",
+    image: "/screenshots/budget-tracking.png" // Updated path
+  },
+  {
+    title: "Expense Categories",
+    description: "Organize your spending with customizable categories",
+    image: "/screenshots/categories.png" // Updated path
+  }
+];
+
 const faqs = [
   {
     question: "What makes CurioPay different?",
@@ -55,7 +84,7 @@ const faqs = [
   },
   {
     question: "Which LLM providers are supported?",
-    answer: "We currently support Groq and Ollama, with Cohere integration nearly complete. Support for Gemini, Anthropic, OpenAI, and Azure is planned for future updates."
+    answer: "We support a wide range of LLM providers including Groq, Ollama, Deepseek, Gemini, Anthropic, OpenAI, Azure, Mistral, and Cohere. This gives you the flexibility to choose the AI model that best suits your needs."
   },
   {
     question: "Can I deploy it locally?",
@@ -68,7 +97,7 @@ const faqs = [
 ];
 
 const stats = [
-  { label: "LLM Providers", value: "7+", prefix: "" },
+  { label: "LLM Providers", value: "9", prefix: "" },
   { label: "Core Features", value: "10+", prefix: "" },
   { label: "License", value: "MIT", prefix: "" },
   { label: "Cost", value: "Free", prefix: "100%" }
@@ -76,6 +105,7 @@ const stats = [
 
 export default function Home() {
   const [isMounted, setIsMounted] = useState(false);
+  const [currentScreenshot, setCurrentScreenshot] = useState(0);
 
   useEffect(() => {
     setIsMounted(true);
@@ -102,6 +132,14 @@ export default function Home() {
       document.head.removeChild(script);
     };
   }, []);
+
+  const nextScreenshot = () => {
+    setCurrentScreenshot((prev) => (prev + 1) % screenshots.length);
+  };
+
+  const prevScreenshot = () => {
+    setCurrentScreenshot((prev) => (prev - 1 + screenshots.length) % screenshots.length);
+  };
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -167,7 +205,7 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* Hero Section */}
+      {/* Hero Section - Enhanced with more animation and visual appeal */}
       <section className="pt-28 sm:pt-32 pb-16 sm:pb-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden bg-gradient-to-b from-background to-secondary/20">
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute inset-0 bg-grid-blue-500/[0.03] bg-[size:32px] [mask-image:radial-gradient(white,transparent_85%)]" />
@@ -175,6 +213,33 @@ export default function Home() {
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="w-full h-full bg-white/30 backdrop-blur-3xl [mask-image:radial-gradient(transparent,white_50%)]" />
         </div>
+        
+        {/* Animated background elements */}
+        <motion.div 
+          className="absolute top-1/4 left-10 w-64 h-64 rounded-full bg-blue-500/5 blur-3xl"
+          animate={{ 
+            y: [0, 30, 0],
+            opacity: [0.3, 0.5, 0.3]
+          }}
+          transition={{ 
+            duration: 8,
+            repeat: Infinity,
+            repeatType: "reverse"
+          }}
+        />
+        <motion.div 
+          className="absolute bottom-1/4 right-10 w-80 h-80 rounded-full bg-primary/5 blur-3xl"
+          animate={{ 
+            y: [0, -40, 0],
+            opacity: [0.2, 0.4, 0.2]
+          }}
+          transition={{ 
+            duration: 10,
+            repeat: Infinity,
+            repeatType: "reverse"
+          }}
+        />
+        
         <div className="max-w-7xl mx-auto relative">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             <div className="text-center lg:text-left">
@@ -199,7 +264,7 @@ export default function Home() {
                 <div className="relative">
                   <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-foreground">
                     100% Free & <br />
-                    <span className="text-primary">Open Source</span>
+                    <span className="text-primary bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400 text-transparent">Open Source</span>
                   </h1>
                 </div>
               </motion.div>
@@ -226,6 +291,18 @@ export default function Home() {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.25 }}
+                className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6 max-w-2xl mx-auto lg:mx-0"
+              >
+                <p className="text-blue-800 dark:text-blue-200 text-sm sm:text-base flex items-center">
+                  <Brain className="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400" />
+                  <span><strong>Now Supporting 9 LLM Providers!</strong> Including Groq, Ollama, DeepSeek, Gemini, Anthropic, OpenAI, Azure, Mistral, and Cohere.</span>
+                </p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
                 className="bg-yellow-100 dark:bg-yellow-900/50 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 mb-8 max-w-2xl mx-auto lg:mx-0"
               >
@@ -242,9 +319,9 @@ export default function Home() {
               >
                 <Link href="/register" className="w-full sm:w-auto">
                   <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                    <Button size="lg" className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground text-lg px-8 py-6 shadow-lg">
+                    <ShimmerButton className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground text-lg px-8 py-6 shadow-lg">
                       Get Started <ArrowRight className="w-5 h-5 inline-block ml-2" />
-                    </Button>
+                    </ShimmerButton>
                   </motion.div>
                 </Link>
                 <a 
@@ -306,7 +383,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Stats Section */}
+      {/* Stats Section - Enhanced with more visual appeal */}
       <section className="py-12 sm:py-20 px-4 sm:px-6 lg:px-8 bg-background relative">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-2 gap-4 sm:gap-8">
@@ -324,13 +401,138 @@ export default function Home() {
                   initial={{ scale: 0 }}
                   whileInView={{ scale: 1 }}
                   transition={{ delay: index * 0.1 + 0.2, type: "spring" }}
-                  className="text-2xl sm:text-4xl font-bold text-primary mb-1 sm:mb-2"
+                  className="text-2xl sm:text-4xl font-bold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent mb-1 sm:mb-2"
                 >
                   {stat.prefix}{stat.value}
                 </motion.div>
                 <div className="text-sm sm:text-base text-muted-foreground font-medium">{stat.label}</div>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* NEW SECTION: Screenshot Gallery */}
+      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-background to-secondary/20 relative overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-grid-blue-500/[0.03] bg-[size:32px] [mask-image:radial-gradient(white,transparent_85%)]" />
+        </div>
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            className="text-center mb-12 sm:mb-16"
+          >
+            <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-3 sm:mb-4">
+              See CurioPay in <span className="bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">Action</span>
+            </h2>
+            <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto">
+              Explore the intuitive interface and powerful features that make financial management a breeze
+            </p>
+          </motion.div>
+          
+          <div className="relative">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2 }}
+              className="rounded-xl overflow-hidden border shadow-2xl bg-card relative"
+            >
+              {/* Screenshot Browser Frame */}
+              <div className="absolute top-0 left-0 right-0 h-10 bg-muted flex items-center px-4 z-10">
+                <div className="flex gap-2">
+                  <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                  <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                  <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                </div>
+                <div className="ml-4 text-xs text-muted-foreground">CurioPay - {screenshots[currentScreenshot].title}</div>
+              </div>
+              
+              {/* Screenshot Content */}
+              <div className="pt-10 relative">
+                {!isMounted ? (
+                  <div className="w-full aspect-[16/9] bg-muted animate-pulse flex items-center justify-center">
+                    <ImageIcon className="w-12 h-12 text-muted-foreground/50" />
+                  </div>
+                ) : (
+                  <div className="w-full aspect-[16/9] bg-muted flex items-center justify-center relative overflow-hidden">
+                    {/* Placeholder for actual screenshots */}
+                    <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/30">
+                      <div className="text-center p-8 max-w-md">
+                        <ImageIcon className="w-16 h-16 mx-auto mb-4 text-blue-500/50" />
+                        <h3 className="text-xl font-bold mb-2">{screenshots[currentScreenshot].title}</h3>
+                        <p className="text-muted-foreground">{screenshots[currentScreenshot].description}</p>
+                      </div>
+                    </div>
+                    
+                    {/* Uncommented Image component - will display images when they're available */}
+                    <Image 
+                      src={screenshots[currentScreenshot].image}
+                      alt={screenshots[currentScreenshot].title}
+                      fill
+                      className="object-cover opacity-0" // Initially hidden until real screenshots are added
+                    />
+                  </div>
+                )}
+              </div>
+              
+              {/* Navigation Controls */}
+              <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
+                <Button 
+                  variant="secondary" 
+                  size="icon" 
+                  className="rounded-full w-10 h-10 bg-background/80 backdrop-blur-sm shadow-lg"
+                  onClick={prevScreenshot}
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </Button>
+              </div>
+              <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
+                <Button 
+                  variant="secondary" 
+                  size="icon" 
+                  className="rounded-full w-10 h-10 bg-background/80 backdrop-blur-sm shadow-lg"
+                  onClick={nextScreenshot}
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </Button>
+              </div>
+              
+              {/* Screenshot Indicators */}
+              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
+                {screenshots.map((_, index) => (
+                  <Button 
+                    key={index} 
+                    variant="ghost" 
+                    size="icon" 
+                    className={`w-3 h-3 rounded-full p-0 ${index === currentScreenshot ? 'bg-primary' : 'bg-muted'}`}
+                    onClick={() => setCurrentScreenshot(index)}
+                  />
+                ))}
+              </div>
+            </motion.div>
+            
+            {/* Caption */}
+            <div className="text-center mt-6">
+              <p className="text-muted-foreground">
+                <span className="font-medium">{currentScreenshot + 1}/{screenshots.length}:</span> {screenshots[currentScreenshot].description}
+              </p>
+            </div>
+            
+            {/* Call to Action */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="text-center mt-8"
+            >
+              <Link href="/register">
+                <Button variant="outline" className="gap-2 group">
+                  <span>Experience it yourself</span>
+                  <ExternalLink className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -398,6 +600,12 @@ export default function Home() {
                   curiopay: "Multiple LLMs",
                   solutionA: "Limited",
                   solutionB: "Single Provider"
+                },
+                {
+                  feature: "LLM Providers",
+                  curiopay: "9 Providers",
+                  solutionA: "1-2 Providers",
+                  solutionB: "1 Provider"
                 },
                 {
                   feature: "Data Control",
@@ -594,20 +802,71 @@ export default function Home() {
                       whileInView={{ opacity: 1, x: 0 }}
                       className="space-y-4"
                     >
-                      <h4 className="font-semibold">Current Support</h4>
+                      <h4 className="font-semibold">Supported Providers</h4>
                       <div className="flex flex-wrap gap-4">
-                        <div className="flex items-center gap-2 p-2 rounded-lg border bg-card">
+                        <motion.div 
+                          whileHover={{ scale: 1.05 }}
+                          className="flex items-center gap-2 p-2 rounded-lg border bg-card shadow-sm"
+                        >
                           <Image src="/groq.svg" alt="Groq" width={24} height={24} className="w-6 h-6" />
                           <span className="text-sm font-medium">Groq</span>
-                        </div>
-                        <div className="flex items-center gap-2 p-2 rounded-lg border bg-card">
+                        </motion.div>
+                        <motion.div 
+                          whileHover={{ scale: 1.05 }}
+                          className="flex items-center gap-2 p-2 rounded-lg border bg-card shadow-sm"
+                        >
                           <Image src="/ollama.png" alt="Ollama" width={24} height={24} className="w-6 h-6" />
                           <span className="text-sm font-medium">Ollama</span>
-                        </div>
-                        <div className="flex items-center gap-2 p-2 rounded-lg border bg-card">
+                        </motion.div>
+                        <motion.div 
+                          whileHover={{ scale: 1.05 }}
+                          className="flex items-center gap-2 p-2 rounded-lg border bg-card shadow-sm"
+                        >
+                          <Image src="/deepseek.svg" alt="DeepSeek" width={24} height={24} className="w-6 h-6" />
+                          <span className="text-sm font-medium">DeepSeek</span>
+                        </motion.div>
+                        <motion.div 
+                          whileHover={{ scale: 1.05 }}
+                          className="flex items-center gap-2 p-2 rounded-lg border bg-card shadow-sm"
+                        >
+                          <Image src="/gemini.svg" alt="Gemini" width={24} height={24} className="w-6 h-6" />
+                          <span className="text-sm font-medium">Gemini</span>
+                        </motion.div>
+                        <motion.div 
+                          whileHover={{ scale: 1.05 }}
+                          className="flex items-center gap-2 p-2 rounded-lg border bg-card shadow-sm"
+                        >
+                          <Image src="/anthropic.svg" alt="Anthropic" width={24} height={24} className="w-6 h-6" />
+                          <span className="text-sm font-medium">Anthropic</span>
+                        </motion.div>
+                        <motion.div 
+                          whileHover={{ scale: 1.05 }}
+                          className="flex items-center gap-2 p-2 rounded-lg border bg-card shadow-sm"
+                        >
+                          <Image src="/openai.svg" alt="OpenAI" width={24} height={24} className="w-6 h-6" />
+                          <span className="text-sm font-medium">OpenAI</span>
+                        </motion.div>
+                        <motion.div 
+                          whileHover={{ scale: 1.05 }}
+                          className="flex items-center gap-2 p-2 rounded-lg border bg-card shadow-sm"
+                        >
+                          <Image src="/azure.svg" alt="Azure" width={24} height={24} className="w-6 h-6" />
+                          <span className="text-sm font-medium">Azure</span>
+                        </motion.div>
+                        <motion.div 
+                          whileHover={{ scale: 1.05 }}
+                          className="flex items-center gap-2 p-2 rounded-lg border bg-card shadow-sm"
+                        >
+                          <Image src="/mistral.svg" alt="Mistral" width={24} height={24} className="w-6 h-6" />
+                          <span className="text-sm font-medium">Mistral</span>
+                        </motion.div>
+                        <motion.div 
+                          whileHover={{ scale: 1.05 }}
+                          className="flex items-center gap-2 p-2 rounded-lg border bg-card shadow-sm"
+                        >
                           <Image src="/cohere.svg" alt="Cohere" width={24} height={24} className="w-6 h-6" />
-                          <span className="text-sm font-medium">Cohere (Soon)</span>
-                        </div>
+                          <span className="text-sm font-medium">Cohere</span>
+                        </motion.div>
                       </div>
                     </motion.div>
                     <motion.div 
@@ -615,24 +874,44 @@ export default function Home() {
                       whileInView={{ opacity: 1, x: 0 }}
                       className="space-y-4"
                     >
-                      <h4 className="font-semibold">Coming Soon</h4>
-                      <div className="flex flex-wrap gap-4">
-                        <div className="flex items-center gap-2 p-2 rounded-lg border bg-card/50">
-                          <Image src="/gemini.svg" alt="Gemini" width={24} height={24} className="w-6 h-6" />
-                          <span className="text-sm font-medium">Gemini</span>
-                        </div>
-                        <div className="flex items-center gap-2 p-2 rounded-lg border bg-card/50">
-                          <Image src="/anthropic.svg" alt="Anthropic" width={24} height={24} className="w-6 h-6" />
-                          <span className="text-sm font-medium">Anthropic</span>
-                        </div>
-                        <div className="flex items-center gap-2 p-2 rounded-lg border bg-card/50">
-                          <Image src="/openai.svg" alt="OpenAI" width={24} height={24} className="w-6 h-6" />
-                          <span className="text-sm font-medium">OpenAI</span>
-                        </div>
-                        <div className="flex items-center gap-2 p-2 rounded-lg border bg-card/50">
-                          <Image src="/azure.svg" alt="Azure" width={24} height={24} className="w-6 h-6" />
-                          <span className="text-sm font-medium">Azure</span>
-                        </div>
+                      <h4 className="font-semibold">Key Features</h4>
+                      <div className="space-y-4">
+                        <motion.div 
+                          whileHover={{ scale: 1.02 }}
+                          className="p-4 rounded-lg border bg-card/80"
+                        >
+                          <h5 className="font-medium mb-1 flex items-center gap-2">
+                            <div className="w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center">
+                              <Brain className="w-3 h-3 text-purple-700" />
+                            </div>
+                            Model Selection
+                          </h5>
+                          <p className="text-sm text-muted-foreground">Choose from various models for each provider based on your needs</p>
+                        </motion.div>
+                        <motion.div 
+                          whileHover={{ scale: 1.02 }}
+                          className="p-4 rounded-lg border bg-card/80"
+                        >
+                          <h5 className="font-medium mb-1 flex items-center gap-2">
+                            <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center">
+                              <Shield className="w-3 h-3 text-blue-700" />
+                            </div>
+                            Secure API Keys
+                          </h5>
+                          <p className="text-sm text-muted-foreground">Your API keys are stored securely in your browser, never on our servers</p>
+                        </motion.div>
+                        <motion.div 
+                          whileHover={{ scale: 1.02 }}
+                          className="p-4 rounded-lg border bg-card/80"
+                        >
+                          <h5 className="font-medium mb-1 flex items-center gap-2">
+                            <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center">
+                              <LineChart className="w-3 h-3 text-green-700" />
+                            </div>
+                            Financial Insights
+                          </h5>
+                          <p className="text-sm text-muted-foreground">Get personalized financial advice and insights from your preferred AI model</p>
+                        </motion.div>
                       </div>
                     </motion.div>
                   </div>
@@ -880,13 +1159,54 @@ export default function Home() {
             >
               <Link href="/register" className="w-full sm:w-auto">
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button size="lg" className="w-full sm:w-auto bg-background hover:bg-background/90 text-primary text-lg px-8 py-6 shadow-xl">
+                  <ShimmerButton className="w-full sm:w-auto bg-background hover:bg-background/90 text-primary text-lg px-8 py-6 shadow-xl">
                     Get Started <ArrowRight className="w-5 h-5 inline-block ml-2" />
-                  </Button>
+                  </ShimmerButton>
                 </motion.div>
               </Link>
+              <a 
+                href="https://github.com/adhamafis/curiopay"
+                target="_blank"
+                rel="noopener noreferrer" 
+                className="w-full sm:w-auto"
+              >
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button variant="outline" size="lg" className="w-full sm:w-auto bg-transparent border-2 border-white/30 text-white hover:bg-white/10 text-lg px-8 py-6">
+                    <GitHubLogoIcon className="w-5 h-5 inline-block mr-2" />
+                    Star on GitHub
+                  </Button>
+                </motion.div>
+              </a>
             </motion.div>
           </motion.div>
+          
+          {/* Floating elements for visual interest */}
+          <motion.div 
+            className="absolute -top-16 -left-16 w-32 h-32 rounded-full bg-blue-400/20 blur-xl"
+            animate={{ 
+              scale: [1, 1.2, 1],
+              rotate: [0, 45, 0],
+              opacity: [0.5, 0.7, 0.5]
+            }}
+            transition={{ 
+              duration: 8,
+              repeat: Infinity,
+              repeatType: "reverse"
+            }}
+          />
+          <motion.div 
+            className="absolute -bottom-20 -right-20 w-40 h-40 rounded-full bg-blue-300/20 blur-xl"
+            animate={{ 
+              scale: [1, 1.3, 1],
+              rotate: [0, -45, 0],
+              opacity: [0.5, 0.8, 0.5]
+            }}
+            transition={{ 
+              duration: 10,
+              repeat: Infinity,
+              repeatType: "reverse"
+            }}
+          />
         </div>
       </section>
 
