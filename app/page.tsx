@@ -95,7 +95,7 @@ const stats = [
   { label: "LLM Providers", value: "9", prefix: "" },
   { label: "Core Features", value: "10+", prefix: "" },
   { label: "License", value: "MIT", prefix: "" },
-  { label: "Cost", value: "Free", prefix: "100%" }
+  { label: "Cost", value: "Free", prefix: "100% " }
 ];
 
 export default function Home() {
