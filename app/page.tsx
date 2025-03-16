@@ -164,10 +164,14 @@ export default function Home() {
               className="flex items-center"
               whileHover={{ scale: 1.05 }}
             >
-              <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-primary mr-2" />
-              <h1 className="text-xl sm:text-2xl font-bold text-primary">
-                CurioPay
-              </h1>
+              <Image
+                src="/logo/logo.svg"
+                alt="CurioPay Logo"
+                width={240}
+                height={80}
+                className="h-12 sm:h-16 w-auto"
+                priority
+              />
             </motion.div>
           </Link>
           

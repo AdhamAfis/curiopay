@@ -3,6 +3,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
+import Image from "next/image";
 
 import {
   Sidebar,
@@ -89,12 +90,26 @@ export function AppSidebar() {
   return (
     <Sidebar variant="sidebar" collapsible="icon">
       <SidebarHeader>
-        <div className="flex h-16 items-center justify-center transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
-          <span className="text-lg font-bold truncate transition-opacity duration-200 ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:opacity-0">
-            CurioPay
-          </span>
+        <div className="flex h-20 items-center justify-center transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-16">
+          <div className="flex items-center transition-opacity duration-200 ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:opacity-0">
+            <Image
+              src="/logo/logo.svg"
+              alt="CurioPay Logo"
+              width={360}
+              height={120}
+              className="h-16 w-auto"
+              priority
+            />
+          </div>
           <div className="absolute opacity-0 transition-opacity duration-200 ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:opacity-100">
-            <Wallet className="h-5 w-5" />
+            <Image
+              src="/logo/logo.svg"
+              alt="CurioPay Logo"
+              width={240}
+              height={80}
+              className="h-12 w-auto"
+              priority
+            />
           </div>
         </div>
       </SidebarHeader>
@@ -140,10 +155,13 @@ export function AppSidebar() {
             <SidebarMenuButton className="w-full">
               <div className="flex w-full items-center gap-2">
                 <User className="h-4 w-4" />
-                <span className="flex-1 truncate text-left">
+                <span className="flex-1 truncate text-left transition-opacity duration-200 ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:opacity-0">
                   {session?.user?.name || 'User'}
                 </span>
-                <ChevronUp className="h-4 w-4 opacity-50" />
+                <ChevronUp className="h-4 w-4 opacity-50 transition-opacity duration-200 ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:opacity-0" />
+                <div className="absolute right-3 opacity-0 transition-opacity duration-200 ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:opacity-100">
+                  <User className="h-4 w-4" />
+                </div>
               </div>
             </SidebarMenuButton>
           </DropdownMenuTrigger>
