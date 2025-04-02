@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Test trigger for GitHub Actions
 echo "🚀 Setting up CurioPay development environment..."
 
 # Generate random NEXTAUTH_SECRET if needed

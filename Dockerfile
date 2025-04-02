@@ -1,5 +1,6 @@
 FROM node:20-alpine as development
 
+# Test trigger for GitHub Actions
 WORKDIR /app
 
 # Install OpenSSL and other dependencies
