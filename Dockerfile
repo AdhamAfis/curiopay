@@ -1,4 +1,4 @@
-FROM node:20-alpine as development
+FROM node:20-alpine AS development
 
 # Test trigger for GitHub Actions
 WORKDIR /app
@@ -9,11 +9,11 @@ COPY prisma ./prisma/
 
 # Install dependencies and generate Prisma client
 RUN apk add --no-cache \
-    python3=3.11.8-r0 \
-    make=4.4.1-r2 \
-    g++=13.2.1_git20231014-r0 \
-    openssl=3.1.4-r5 \
-    openssl-dev=3.1.4-r5 \
+    python3~=3.11 \
+    make~=4.4 \
+    g++~=13.2 \
+    openssl~=3.1 \
+    openssl-dev~=3.1 \
     && npm install \
     && npx prisma generate
 
