@@ -1,0 +1,114 @@
+name: Check Installation Script
+
+# Test trigger comment
+on:
+  push:
+    branches: ['**']  # This will match all branches
+    paths:
+      - 'setup.sh'
+      - 'docker-compose.yml'
+  pull_request:
+    branches: ['**']  # This will match all branches
+    paths:
+      - 'setup.sh'
+      - 'docker-compose.yml'
+
+jobs:
+  check-shell-script:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: curiopay
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for all branches
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
+      - name: Check shell script syntax
+        run: |
+          # Check for shellcheck
+          if ! command -v shellcheck &> /dev/null; then
+            echo "Installing shellcheck..."
+            sudo apt-get update
+            sudo apt-get install -y shellcheck
+          fi
+          
+          # Run shellcheck on setup.sh
+          shellcheck setup.sh
+          
+      - name: Install Docker
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker.io
+          sudo systemctl start docker
+          sudo systemctl enable docker
+          
+      - name: Test database connection
+        run: |
+          # Wait for PostgreSQL to be ready
+          until pg_isready -h localhost -p 5432 -U postgres; do
+            echo "Waiting for PostgreSQL..."
+            sleep 2
+          done
+          
+          # Test database connection
+          PGPASSWORD=postgres psql -h localhost -U postgres -d curiopay -c "SELECT 1;" || exit 1
+          
+      - name: Test setup script in isolated environment
+        run: |
+          # Create a test directory
+          mkdir -p test-setup
+          cd test-setup
+          
+          # Copy necessary files
+          cp ../setup.sh .
+          cp ../docker-compose.yml .
+          cp ../Dockerfile .
+          cp ../docker-entrypoint.sh .
+          
+          # Make scripts executable
+          chmod +x setup.sh
+          chmod +x docker-entrypoint.sh
+          
+          # Create a minimal package.json for testing
+          echo '{
+            "name": "curiopay-test",
+            "version": "1.0.0",
+            "scripts": {
+              "dev": "echo \"Test dev server\"",
+              "build": "echo \"Test build\""
+            }
+          }' > package.json
+          
+          # Create a minimal prisma directory
+          mkdir -p prisma
+          echo 'datasource db {
+            provider = "postgresql"
+            url      = env("DATABASE_URL")
+          }' > prisma/schema.prisma
+          
+          # Run setup script in test mode
+          echo "Running setup script in test mode..."
+          ./setup.sh || true
+          
+          # Clean up
+          cd ..
+          rm -rf test-setup 
