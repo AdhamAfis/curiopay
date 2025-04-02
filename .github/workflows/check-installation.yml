@@ -2,10 +2,12 @@ name: Check Installation Script
 
 on:
   push:
+    branches: ['**']  # This will match all branches
     paths:
       - 'setup.sh'
       - 'docker-compose.yml'
   pull_request:
+    branches: ['**']  # This will match all branches
     paths:
       - 'setup.sh'
       - 'docker-compose.yml'
@@ -29,7 +31,10 @@ jobs:
           --health-retries 5
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for all branches
       
       - name: Set up Node.js
         uses: actions/setup-node@v4

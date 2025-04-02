@@ -2,6 +2,8 @@ name: Docker Build and Push
 
 on:
   push:
+    branches:
+      - main
     tags:
       - 'v*'
   workflow_dispatch:
@@ -10,6 +12,10 @@ on:
         description: 'Docker image tag'
         required: true
         default: 'latest'
+      branch:
+        description: 'Branch to build from'
+        required: true
+        default: 'main'
 
 env:
   REGISTRY: docker.io
@@ -36,6 +42,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for all branches
+          ref: ${{ github.event.inputs.branch || github.ref }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -53,6 +62,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=raw,value=${{ github.event.inputs.tag || github.ref_name }}
+            type=raw,value=${{ github.ref_name }}-${{ github.sha }}
             type=sha,format=short
             type=ref,event=branch
 

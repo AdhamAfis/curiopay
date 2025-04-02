@@ -2,11 +2,13 @@ name: Check Dockerfile
 
 on:
   push:
+    branches: ['**']  # This will match all branches
     paths:
       - 'Dockerfile'
       - 'docker-compose.yml'
       - 'docker-entrypoint.sh'
   pull_request:
+    branches: ['**']  # This will match all branches
     paths:
       - 'Dockerfile'
       - 'docker-compose.yml'
@@ -31,7 +33,10 @@ jobs:
           --health-retries 5
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for all branches
       
       - name: Run hadolint
         uses: hadolint/hadolint-action@v3.1.0
