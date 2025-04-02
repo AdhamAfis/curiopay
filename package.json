@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -86,6 +86,7 @@
     "swagger-ui-react": "^5.10.5",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
+    "turbopack": "^0.0.1",
     "uuid": "^11.0.3",
     "yaml": "^2.3.4",
     "zxcvbn": "^4.4.2"
