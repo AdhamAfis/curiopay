@@ -13,7 +13,7 @@ prompt_value() {
     local prompt=$1
     local default=$2
     local value
-    read -p "Enter $prompt (default: $default): " value
+    read -r -p "Enter $prompt (default: $default): " value
     echo "${value:-$default}"
 }
 
@@ -104,7 +104,7 @@ init_project() {
 
 # Check if .env exists
 if [ -f .env ]; then
-    read -p "⚠️  .env file already exists. Do you want to recreate it? (y/N) " answer
+    read -r -p "⚠️  .env file already exists. Do you want to recreate it? (y/N) " answer
     if [[ $answer =~ ^[Yy]$ ]]; then
         create_env
     fi
