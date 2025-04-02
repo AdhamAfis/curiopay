@@ -9,11 +9,11 @@ COPY prisma ./prisma/
 
 # Install dependencies and generate Prisma client
 RUN apk add --no-cache \
-    python3~=3.11 \
-    make~=4.4 \
-    g++~=13.2 \
-    openssl~=3.1 \
-    openssl-dev~=3.1 \
+    python3 \
+    make \
+    g++ \
+    openssl \
+    openssl-dev \
     && npm install \
     && npx prisma generate
 
