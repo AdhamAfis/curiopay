@@ -1,5 +1,6 @@
 name: Check Installation Script
 
+# Test trigger comment
 on:
   push:
     branches: ['**']  # This will match all branches
