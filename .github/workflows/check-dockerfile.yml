@@ -1,0 +1,82 @@
+name: Check Dockerfile
+
+on:
+  push:
+    paths:
+      - 'Dockerfile'
+      - 'docker-compose.yml'
+      - 'docker-entrypoint.sh'
+  pull_request:
+    paths:
+      - 'Dockerfile'
+      - 'docker-compose.yml'
+      - 'docker-entrypoint.sh'
+
+jobs:
+  lint-dockerfile:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: curiopay
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Run hadolint
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: Dockerfile
+          
+      - name: Build test image
+        run: |
+          # Test build the Dockerfile
+          docker build -t curiopay-test .
+          
+      - name: Check for common issues
+        run: |
+          # Check for common Dockerfile issues
+          if grep -q "npm install" Dockerfile; then
+            echo "✅ Found npm install command"
+          else
+            echo "❌ npm install command not found"
+            exit 1
+          fi
+          
+          if grep -q "EXPOSE" Dockerfile; then
+            echo "✅ Found EXPOSE command"
+          else
+            echo "❌ EXPOSE command not found"
+            exit 1
+          fi
+          
+          if grep -q "CMD" Dockerfile; then
+            echo "✅ Found CMD command"
+          else
+            echo "❌ CMD command not found"
+            exit 1
+          fi
+          
+      - name: Test database connection in container
+        run: |
+          # Create a test environment file
+          echo "DATABASE_URL=postgresql://postgres:postgres@postgres:5432/curiopay" > .env.test
+          
+          # Start the test container with database connection
+          docker run --rm --network host \
+            --env-file .env.test \
+            curiopay-test \
+            sh -c "npx wait-on tcp:postgres:5432 && npx prisma db push"
+          
+          # Clean up
+          rm .env.test 
