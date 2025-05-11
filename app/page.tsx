@@ -150,153 +150,170 @@ export default function Home() {
         <meta name="twitter:title" content="CurioPay - Open Source Budget Tracking" />
         <meta name="twitter:description" content="Privacy-focused budget tracking with AI-powered insights. Forever free, completely open source." />
       </Head>
-      {/* Navbar */}
-      <nav className={`fixed w-full z-50 transition-all duration-300 ${
-        scrolled 
-          ? 'bg-background/95 backdrop-blur-md shadow-md' 
-          : 'bg-background/80 backdrop-blur-sm'
-      } border-b`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <Link href="/">
+      
+      {/* Fixed Header Container (includes both navbar and announcement) */}
+      <div className="fixed w-full z-50">
+        {/* Navbar */}
+        <nav className={`w-full transition-all duration-300 ${
+          scrolled 
+            ? 'bg-background/95 backdrop-blur-md shadow-md' 
+            : 'bg-background/80 backdrop-blur-sm'
+          } border-b`}>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <Link href="/">
+              <motion.div 
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="flex items-center"
+                whileHover={{ scale: 1.05 }}
+              >
+                <Image
+                  src="/logo/logo.svg"
+                  alt="CurioPay Logo"
+                  width={240}
+                  height={80}
+                  className="h-12 sm:h-16 w-auto"
+                  priority
+                />
+              </motion.div>
+            </Link>
+            
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center space-x-6">
+              <Link href="/features">
+                <motion.span 
+                  className="text-sm font-medium hover:text-primary transition-colors"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  Features
+                </motion.span>
+              </Link>
+              <Link href="/docs">
+                <motion.span 
+                  className="text-sm font-medium hover:text-primary transition-colors"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  Documentation
+                </motion.span>
+              </Link>
+              <Link href="/blog">
+                <motion.span 
+                  className="text-sm font-medium hover:text-primary transition-colors"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  Blog
+                </motion.span>
+              </Link>
+            </div>
+            
             <motion.div 
-              initial={{ opacity: 0, x: -20 }}
+              initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="flex items-center"
-              whileHover={{ scale: 1.05 }}
+              className="flex gap-2 sm:gap-4 items-center"
             >
-              <Image
-                src="/logo/logo.svg"
-                alt="CurioPay Logo"
-                width={240}
-                height={80}
-                className="h-12 sm:h-16 w-auto"
-                priority
-              />
+              <motion.a
+                href="https://github.com/adhamafis/curiopay"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 rounded-md bg-secondary hover:bg-secondary/80 transition-colors"
+                whileHover={{ scale: 1.05 }}
+              >
+                <GitHubLogoIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+                <span className="hidden sm:inline text-secondary-foreground text-xs sm:text-sm">Star on GitHub</span>
+                <span className="sm:hidden text-secondary-foreground text-xs">Star</span>
+              </motion.a>
+              
+              {/* Mobile Menu Button */}
+              <div className="md:hidden">
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="p-1" 
+                  onClick={toggleMobileMenu}
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-menu">
+                    <line x1="4" x2="20" y1="12" y2="12"></line>
+                    <line x1="4" x2="20" y1="6" y2="6"></line>
+                    <line x1="4" x2="20" y1="18" y2="18"></line>
+                  </svg>
+                </Button>
+              </div>
+              
+              {/* Desktop Auth Buttons */}
+              <div className="hidden md:flex items-center gap-2">
+                <Link href="/login">
+                  <motion.div whileHover={{ scale: 1.05 }}>
+                    <Button variant="ghost" className="text-sm">
+                      Login
+                    </Button>
+                  </motion.div>
+                </Link>
+                <Link href="/register">
+                  <motion.div whileHover={{ scale: 1.05 }}>
+                    <Button className="text-sm bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg">
+                      Get Started
+                    </Button>
+                  </motion.div>
+                </Link>
+              </div>
             </motion.div>
-          </Link>
-          
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-6">
-            <Link href="/features">
-              <motion.span 
-                className="text-sm font-medium hover:text-primary transition-colors"
-                whileHover={{ scale: 1.05 }}
-              >
-                Features
-              </motion.span>
-            </Link>
-            <Link href="/docs">
-              <motion.span 
-                className="text-sm font-medium hover:text-primary transition-colors"
-                whileHover={{ scale: 1.05 }}
-              >
-                Documentation
-              </motion.span>
-            </Link>
-            <Link href="/blog">
-              <motion.span 
-                className="text-sm font-medium hover:text-primary transition-colors"
-                whileHover={{ scale: 1.05 }}
-              >
-                Blog
-              </motion.span>
-            </Link>
           </div>
           
+          {/* Mobile Navigation Menu with animation */}
           <motion.div 
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="flex gap-2 sm:gap-4 items-center"
+            initial={false}
+            animate={{ 
+              height: mobileMenuOpen ? 'auto' : 0,
+              opacity: mobileMenuOpen ? 1 : 0
+            }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="md:hidden overflow-hidden bg-background/95 border-b"
           >
-            <motion.a
-              href="https://github.com/adhamafis/curiopay"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 rounded-md bg-secondary hover:bg-secondary/80 transition-colors"
-              whileHover={{ scale: 1.05 }}
-            >
-              <GitHubLogoIcon className="w-4 h-4 sm:w-5 sm:h-5" />
-              <span className="hidden sm:inline text-secondary-foreground text-xs sm:text-sm">Star on GitHub</span>
-              <span className="sm:hidden text-secondary-foreground text-xs">Star</span>
-            </motion.a>
-            
-            {/* Mobile Menu Button */}
-            <div className="md:hidden">
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                className="p-1" 
-                onClick={toggleMobileMenu}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-menu">
-                  <line x1="4" x2="20" y1="12" y2="12"></line>
-                  <line x1="4" x2="20" y1="6" y2="6"></line>
-                  <line x1="4" x2="20" y1="18" y2="18"></line>
-                </svg>
-              </Button>
-            </div>
-            
-            {/* Desktop Auth Buttons */}
-            <div className="hidden md:flex items-center gap-2">
-              <Link href="/login">
-                <motion.div whileHover={{ scale: 1.05 }}>
-                  <Button variant="ghost" className="text-sm">
-                    Login
-                  </Button>
-                </motion.div>
+            <div className="px-4 py-3 space-y-1">
+              <Link href="/features" className="block px-3 py-2 rounded-md text-base font-medium hover:bg-secondary/50">
+                Features
               </Link>
-              <Link href="/register">
-                <motion.div whileHover={{ scale: 1.05 }}>
-                  <Button className="text-sm bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg">
+              <Link href="/docs" className="block px-3 py-2 rounded-md text-base font-medium hover:bg-secondary/50">
+                Documentation
+              </Link>
+              <Link href="/blog" className="block px-3 py-2 rounded-md text-base font-medium hover:bg-secondary/50">
+                Blog
+              </Link>
+              <div className="pt-4 pb-3 border-t border-gray-200">
+                <div className="flex items-center justify-between">
+                  <Link href="/login" className="w-full">
+                    <Button variant="outline" className="w-full justify-center text-sm mb-2">
+                      Login
+                    </Button>
+                  </Link>
+                </div>
+                <Link href="/register" className="w-full">
+                  <Button className="w-full justify-center text-sm bg-primary hover:bg-primary/90 text-primary-foreground">
                     Get Started
-                  </Button>
-                </motion.div>
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-        
-        {/* Mobile Navigation Menu with animation */}
-        <motion.div 
-          initial={false}
-          animate={{ 
-            height: mobileMenuOpen ? 'auto' : 0,
-            opacity: mobileMenuOpen ? 1 : 0
-          }}
-          transition={{ duration: 0.3, ease: "easeInOut" }}
-          className="md:hidden overflow-hidden bg-background/95 border-b"
-        >
-          <div className="px-4 py-3 space-y-1">
-            <Link href="/features" className="block px-3 py-2 rounded-md text-base font-medium hover:bg-secondary/50">
-              Features
-            </Link>
-            <Link href="/docs" className="block px-3 py-2 rounded-md text-base font-medium hover:bg-secondary/50">
-              Documentation
-            </Link>
-            <Link href="/blog" className="block px-3 py-2 rounded-md text-base font-medium hover:bg-secondary/50">
-              Blog
-            </Link>
-            <div className="pt-4 pb-3 border-t border-gray-200">
-              <div className="flex items-center justify-between">
-                <Link href="/login" className="w-full">
-                  <Button variant="outline" className="w-full justify-center text-sm mb-2">
-                    Login
                   </Button>
                 </Link>
               </div>
-              <Link href="/register" className="w-full">
-                <Button className="w-full justify-center text-sm bg-primary hover:bg-primary/90 text-primary-foreground">
-                  Get Started
-                </Button>
-              </Link>
             </div>
-          </div>
-        </motion.div>
-      </nav>
+          </motion.div>
+        </nav>
 
-      {/* Hero Section - Enhanced with more animation and visual appeal */}
+        {/* Announcement Banner */}
+        <div className="w-full bg-primary/90 text-primary-foreground py-3">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+            <Sparkles className="w-5 h-5 mr-2" />
+            <p className="text-sm md:text-base font-medium text-center">
+              Coming Soon: CurioPay is getting a new backend with improved security, performance, and more!
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Placeholder div to push content below fixed header */}
+      <div className="h-[calc(4rem+2.75rem)]"></div>
+      
+      {/* Hero Section - With appropriate spacing */}
       <section 
-        className="pt-28 sm:pt-32 pb-16 sm:pb-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden bg-gradient-to-b from-background to-secondary/20"
+        className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden bg-gradient-to-b from-background to-secondary/20"
         itemScope
         itemType="https://schema.org/WebPage"
       >

@@ -1,5 +1,7 @@
 # Curiopay: Open Source Budget Tracking App with LLM Insights  
 
+> **🚀 ANNOUNCEMENT**: CurioPay is getting a new backend with improved security, performance, and enhanced features coming soon!
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)  [![Status: Active](https://img.shields.io/badge/Status-Active-success.svg)](https://github.com/adhamafis/curiopay)  [![TypeScript](https://img.shields.io/badge/TypeScript-5.2.2-blue.svg)](https://www.typescriptlang.org/)  [![Next.js](https://img.shields.io/badge/Next.js-14.0.4-black.svg)](https://nextjs.org/)  [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4.0-38B2AC.svg)](https://tailwindcss.com/)  
 
 Curiopay is a free, open-source app for tracking your budget and getting personalized financial insights using AI-powered Large Language Models (LLMs). It helps you track expenses, set budgets, and receive AI-driven advice—all while keeping your data secure with local deployment options.  
@@ -14,10 +16,12 @@ Curiopay is a free, open-source app for tracking your budget and getting persona
 - **Recurring Expenses**: Automate daily, weekly, or monthly expense tracking.  
 - **Data Export**: Save data in CSV or JSON formats.  
 - **Secure and Private**: Local deployment ensures complete control of your financial data.  
+- **New Backend Coming Soon**: Enhanced security, improved performance, and expanded capabilities.
 
 ### In Progress  
 - Responsive mobile-friendly design and themes.  
 - Expanded LLM provider support.  
+- Backend infrastructure upgrade.
 
 ### Planned  
 - Mobile app development.  
@@ -62,7 +66,7 @@ Curiopay is a free, open-source app for tracking your budget and getting persona
 
 ## Contributing  
 
-Contributions are welcome! Here’s how to get started:  
+Contributions are welcome! Here's how to get started:  
 
 1. **Fork and Clone** the repository:  
    ```bash  
