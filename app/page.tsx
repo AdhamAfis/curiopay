@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
-import { cn } from "@/lib/utils";
 import {
   Card,
   CardContent,
@@ -22,8 +21,7 @@ import {
 } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 import { Sparkles, ArrowRight, Shield, Brain, LineChart, Image as ImageIcon, ChevronLeft, ChevronRight, ExternalLink } from "lucide-react";
 import Head from "next/head";
 
@@ -302,7 +300,7 @@ export default function Home() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center">
             <Sparkles className="w-5 h-5 mr-2" />
             <p className="text-sm md:text-base font-medium text-center">
-              Coming Soon: CurioPay is getting a new backend with improved security, performance, and more!
+              CurioPay is getting a new backend with improved security, performance, and more! Check out the <Link href="https://github.com/AdhamAfis/curiopay-api" className="text-primary hover:underline text-slate-200">Github Repo</Link> for more details.
             </p>
           </div>
         </div>
@@ -947,10 +945,17 @@ export default function Home() {
             </TabsContent>
           </Tabs>
           <div className="mt-8 text-center">
+            <Link href="https://github.com/AdhamAfis/curiopay-api" className="inline-flex items-center text-primary hover:text-primary/90">
+              <span className="text-lg">View New Backend Documentation</span>
+              <ArrowRight className="w-5 h-5 ml-2" />
+            </Link>
+          </div>
+          <div className="mt-8 text-center">
             <Link href="/api-docs" className="inline-flex items-center text-primary hover:text-primary/90">
               <span className="text-lg">View API Documentation</span>
               <ArrowRight className="w-5 h-5 ml-2" />
             </Link>
+            
           </div>
         </div>
       </section>
