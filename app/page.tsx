@@ -726,7 +726,7 @@ export default function Home() {
                   },
                   {
                     title: "API Access",
-                    description: "Full API documentation available at /api-docs for developers",
+                    description: "API documentation available at /api-docs for developers",
                     badge: "Dev",
                     icon: <GitHubLogoIcon className="w-10 h-10 text-green-500" aria-hidden="true" />
                   }
@@ -945,7 +945,7 @@ export default function Home() {
             </TabsContent>
           </Tabs>
           <div className="mt-8 text-center">
-            <Link href="https://adhamafis.github.io/curiopay-api/" className="inline-flex items-center text-primary hover:text-primary/90">
+            <Link href="https://curiopay-api-production.up.railway.app/docs" className="inline-flex items-center text-primary hover:text-primary/90">
               <span className="text-lg">View New Backend Documentation</span>
               <ArrowRight className="w-5 h-5 ml-2" />
             </Link>
